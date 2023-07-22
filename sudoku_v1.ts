@@ -2,68 +2,68 @@ export default {}
 
 type False = never
 
-type Implies<X, Y> = (_ : X) => Y
-
-enum True { True }
+type Implies<X, Y> = (_: X) => Y
 
 type Not<X> = Implies<X, False>
 
-type Equals<X, Y> = X extends Y ? (Y extends X ? True.True : False) : False
+type True = Not<False>
+
+type Equals<X, Y> = X extends Y ? (Y extends X ? True : False) : False
 
 // ----------------------------------
 
-function absurd<X>(x : never) : X {
+function absurd<X>(x: never): X {
 	return x
 }
 
 type PairwiseDifferent<
-	X1, X2, X3, 
-	X4, X5, X6, 
+	X1, X2, X3,
+	X4, X5, X6,
 	X7, X8, X9
-> = Not<Equals<X1, X2>> 
-	& Not<Equals<X1, X3>> 
-	& Not<Equals<X1, X3>> 
-	& Not<Equals<X1, X4>> 
-	& Not<Equals<X1, X5>> 
-	& Not<Equals<X1, X6>> 
-	& Not<Equals<X1, X7>> 
-	& Not<Equals<X1, X8>> 
-	& Not<Equals<X1, X9>> 
+> = Not<Equals<X1, X2>>
+	& Not<Equals<X1, X3>>
+	& Not<Equals<X1, X3>>
+	& Not<Equals<X1, X4>>
+	& Not<Equals<X1, X5>>
+	& Not<Equals<X1, X6>>
+	& Not<Equals<X1, X7>>
+	& Not<Equals<X1, X8>>
+	& Not<Equals<X1, X9>>
 
-	& Not<Equals<X2, X3>> 
-	& Not<Equals<X2, X4>> 
-	& Not<Equals<X2, X5>> 
-	& Not<Equals<X2, X6>> 
-	& Not<Equals<X2, X7>> 
-	& Not<Equals<X2, X8>> 
-	& Not<Equals<X2, X9>> 
+	& Not<Equals<X2, X3>>
+	& Not<Equals<X2, X4>>
+	& Not<Equals<X2, X5>>
+	& Not<Equals<X2, X6>>
+	& Not<Equals<X2, X7>>
+	& Not<Equals<X2, X8>>
+	& Not<Equals<X2, X9>>
 
-	& Not<Equals<X3, X4>> 
-	& Not<Equals<X3, X5>> 
-	& Not<Equals<X3, X6>> 
-	& Not<Equals<X3, X7>> 
-	& Not<Equals<X3, X8>> 
-	& Not<Equals<X3, X9>> 
+	& Not<Equals<X3, X4>>
+	& Not<Equals<X3, X5>>
+	& Not<Equals<X3, X6>>
+	& Not<Equals<X3, X7>>
+	& Not<Equals<X3, X8>>
+	& Not<Equals<X3, X9>>
 
-	& Not<Equals<X4, X5>> 
-	& Not<Equals<X4, X6>> 
-	& Not<Equals<X4, X7>> 
-	& Not<Equals<X4, X8>> 
-	& Not<Equals<X4, X9>> 
+	& Not<Equals<X4, X5>>
+	& Not<Equals<X4, X6>>
+	& Not<Equals<X4, X7>>
+	& Not<Equals<X4, X8>>
+	& Not<Equals<X4, X9>>
 
-	& Not<Equals<X5, X6>> 
-	& Not<Equals<X5, X7>> 
-	& Not<Equals<X5, X8>> 
-	& Not<Equals<X5, X9>> 
+	& Not<Equals<X5, X6>>
+	& Not<Equals<X5, X7>>
+	& Not<Equals<X5, X8>>
+	& Not<Equals<X5, X9>>
 
-	& Not<Equals<X6, X7>> 
-	& Not<Equals<X6, X8>> 
-	& Not<Equals<X6, X9>> 
+	& Not<Equals<X6, X7>>
+	& Not<Equals<X6, X8>>
+	& Not<Equals<X6, X9>>
 
-	& Not<Equals<X7, X8>> 
-	& Not<Equals<X7, X9>> 
+	& Not<Equals<X7, X8>>
+	& Not<Equals<X7, X9>>
 
-	& Not<Equals<X8, X9>> 
+	& Not<Equals<X8, X9>>
 
 type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
@@ -77,9 +77,9 @@ type Sudoku<
 	X71 extends Cell, X72 extends Cell, X73 extends Cell, X74 extends Cell, X75 extends Cell, X76 extends Cell, X77 extends Cell, X78 extends Cell, X79 extends Cell,
 	X81 extends Cell, X82 extends Cell, X83 extends Cell, X84 extends Cell, X85 extends Cell, X86 extends Cell, X87 extends Cell, X88 extends Cell, X89 extends Cell,
 	X91 extends Cell, X92 extends Cell, X93 extends Cell, X94 extends Cell, X95 extends Cell, X96 extends Cell, X97 extends Cell, X98 extends Cell, X99 extends Cell
-> = 
+> =
 	// rows
-	  PairwiseDifferent<X11, X12, X13, X14, X15, X16, X17, X18, X19>
+	PairwiseDifferent<X11, X12, X13, X14, X15, X16, X17, X18, X19>
 	& PairwiseDifferent<X21, X22, X23, X24, X25, X26, X27, X28, X29>
 	& PairwiseDifferent<X31, X32, X33, X34, X35, X36, X37, X38, X39>
 	& PairwiseDifferent<X41, X42, X43, X44, X45, X46, X47, X48, X49>
@@ -101,9 +101,9 @@ type Sudoku<
 	& PairwiseDifferent<X19, X29, X39, X49, X59, X69, X79, X89, X99>
 
 	// three upper squares
-	& PairwiseDifferent<X11, X12, X13, X21, X22, X23, X31, X32, X33> 
+	& PairwiseDifferent<X11, X12, X13, X21, X22, X23, X31, X32, X33>
 	& PairwiseDifferent<X14, X15, X16, X24, X25, X26, X34, X35, X36>
-	& PairwiseDifferent<X17, X18, X19, X27, X28, X29, X37, X38, X39> 
+	& PairwiseDifferent<X17, X18, X19, X27, X28, X29, X37, X38, X39>
 
 	// three center squares
 	& PairwiseDifferent<X41, X42, X43, X51, X52, X53, X61, X62, X63>
@@ -116,16 +116,16 @@ type Sudoku<
 	& PairwiseDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
 
 
-const sudoku : Sudoku<
-	7, 9, 2,  3, 5, 4,  6, 1, 8,
-	8, 5, 4,  1, 2, 6,  3, 9, 7,
-	3, 6, 1,  9, 8, 7,  5, 2, 4,
+const sudoku: Sudoku<
+	7, 9, 2, 3, 5, 4, 6, 1, 8,
+	8, 5, 4, 1, 2, 6, 3, 9, 7,
+	3, 6, 1, 9, 8, 7, 5, 2, 4,
 
-	9, 4, 5,  6, 3, 8,  1, 7, 2,
-	2, 7, 8,  5, 4, 1,  9, 3, 6,
-	6, 1, 3,  7, 9, 2,  8, 4, 5,
+	9, 4, 5, 6, 3, 8, 1, 7, 2,
+	2, 7, 8, 5, 4, 1, 9, 3, 6,
+	6, 1, 3, 7, 9, 2, 8, 4, 5,
 
-	4, 2, 9,  8, 1, 5,  7, 6, 3,
-	1, 8, 7,  2, 6, 3,  4, 5, 9,
-	5, 3, 6,  4, 7, 9,  2, 8, 1
+	4, 2, 9, 8, 1, 5, 7, 6, 3,
+	1, 8, 7, 2, 6, 3, 4, 5, 9,
+	5, 3, 6, 4, 7, 9, 2, 8, 1
 > = absurd

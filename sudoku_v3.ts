@@ -1,7 +1,7 @@
 
-type False = never
-
 type True = unknown
+
+type False = never
 
 // type Implies<X, Y> = (_: X) => Y
 
@@ -42,17 +42,17 @@ type AllDifferent<
 
 /////////////////////////////////////////////////////
 
-enum Num1 { x }
-enum Num2 { x }
-enum Num3 { x }
-enum Num4 { x }
-enum Num5 { x }
-enum Num6 { x }
-enum Num7 { x }
-enum Num8 { x }
-enum Num9 { x }
+enum Num1 { x = 1 }
+enum Num2 { x = 2 }
+enum Num3 { x = 3 }
+enum Num4 { x = 4 }
+enum Num5 { x = 5 }
+enum Num6 { x = 6 }
+enum Num7 { x = 7 }
+enum Num8 { x = 8 }
+enum Num9 { x = 9 }
 
-enum Hole { hole }
+enum Hole { hole = 0 }
 
 const _1 = Num1.x
 const _2 = Num2.x
@@ -67,7 +67,9 @@ const __ = Hole.hole
 
 type Cell = Num1 | Num2 | Num3 | Num4 | Num5 | Num6 | Num7 | Num8 | Num9
 
-type Sudoku<
+type Sudoku_<
+  State,
+
   X11, X12, X13, X14, X15, X16, X17, X18, X19,
   X21, X22, X23, X24, X25, X26, X27, X28, X29,
   X31, X32, X33, X34, X35, X36, X37, X38, X39,
@@ -79,15 +81,15 @@ type Sudoku<
   X91, X92, X93, X94, X95, X96, X97, X98, X99,
 > =
   [
-    X11 | Hole, X12 | Hole, X13 | Hole, X14 | Hole, X15 | Hole, X16 | Hole, X17 | Hole, X18 | Hole, X19 | Hole,
-    X21 | Hole, X22 | Hole, X23 | Hole, X24 | Hole, X25 | Hole, X26 | Hole, X27 | Hole, X28 | Hole, X29 | Hole,
-    X31 | Hole, X32 | Hole, X33 | Hole, X34 | Hole, X35 | Hole, X36 | Hole, X37 | Hole, X38 | Hole, X39 | Hole,
-    X41 | Hole, X42 | Hole, X43 | Hole, X44 | Hole, X45 | Hole, X46 | Hole, X47 | Hole, X48 | Hole, X49 | Hole,
-    X51 | Hole, X52 | Hole, X53 | Hole, X54 | Hole, X55 | Hole, X56 | Hole, X57 | Hole, X58 | Hole, X59 | Hole,
-    X61 | Hole, X62 | Hole, X63 | Hole, X64 | Hole, X65 | Hole, X66 | Hole, X67 | Hole, X68 | Hole, X69 | Hole,
-    X71 | Hole, X72 | Hole, X73 | Hole, X74 | Hole, X75 | Hole, X76 | Hole, X77 | Hole, X78 | Hole, X79 | Hole,
-    X81 | Hole, X82 | Hole, X83 | Hole, X84 | Hole, X85 | Hole, X86 | Hole, X87 | Hole, X88 | Hole, X89 | Hole,
-    X91 | Hole, X92 | Hole, X93 | Hole, X94 | Hole, X95 | Hole, X96 | Hole, X97 | Hole, X98 | Hole, X99 | Hole,
+    X11 | State, X12 | State, X13 | State, X14 | State, X15 | State, X16 | State, X17 | State, X18 | State, X19 | State,
+    X21 | State, X22 | State, X23 | State, X24 | State, X25 | State, X26 | State, X27 | State, X28 | State, X29 | State,
+    X31 | State, X32 | State, X33 | State, X34 | State, X35 | State, X36 | State, X37 | State, X38 | State, X39 | State,
+    X41 | State, X42 | State, X43 | State, X44 | State, X45 | State, X46 | State, X47 | State, X48 | State, X49 | State,
+    X51 | State, X52 | State, X53 | State, X54 | State, X55 | State, X56 | State, X57 | State, X58 | State, X59 | State,
+    X61 | State, X62 | State, X63 | State, X64 | State, X65 | State, X66 | State, X67 | State, X68 | State, X69 | State,
+    X71 | State, X72 | State, X73 | State, X74 | State, X75 | State, X76 | State, X77 | State, X78 | State, X79 | State,
+    X81 | State, X82 | State, X83 | State, X84 | State, X85 | State, X86 | State, X87 | State, X88 | State, X89 | State,
+    X91 | State, X92 | State, X93 | State, X94 | State, X95 | State, X96 | State, X97 | State, X98 | State, X99 | State,
   ]
 
   // rows
@@ -127,6 +129,32 @@ type Sudoku<
   & AllDifferent<X74, X75, X76, X84, X85, X86, X94, X95, X96>
   & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
 
+type Sudoku<State> = <
+  X11 extends Cell, X12 extends Cell, X13 extends Cell, X14 extends Cell, X15 extends Cell, X16 extends Cell, X17 extends Cell, X18 extends Cell, X19 extends Cell,
+  X21 extends Cell, X22 extends Cell, X23 extends Cell, X24 extends Cell, X25 extends Cell, X26 extends Cell, X27 extends Cell, X28 extends Cell, X29 extends Cell,
+  X31 extends Cell, X32 extends Cell, X33 extends Cell, X34 extends Cell, X35 extends Cell, X36 extends Cell, X37 extends Cell, X38 extends Cell, X39 extends Cell,
+  X41 extends Cell, X42 extends Cell, X43 extends Cell, X44 extends Cell, X45 extends Cell, X46 extends Cell, X47 extends Cell, X48 extends Cell, X49 extends Cell,
+  X51 extends Cell, X52 extends Cell, X53 extends Cell, X54 extends Cell, X55 extends Cell, X56 extends Cell, X57 extends Cell, X58 extends Cell, X59 extends Cell,
+  X61 extends Cell, X62 extends Cell, X63 extends Cell, X64 extends Cell, X65 extends Cell, X66 extends Cell, X67 extends Cell, X68 extends Cell, X69 extends Cell,
+  X71 extends Cell, X72 extends Cell, X73 extends Cell, X74 extends Cell, X75 extends Cell, X76 extends Cell, X77 extends Cell, X78 extends Cell, X79 extends Cell,
+  X81 extends Cell, X82 extends Cell, X83 extends Cell, X84 extends Cell, X85 extends Cell, X86 extends Cell, X87 extends Cell, X88 extends Cell, X89 extends Cell,
+  X91 extends Cell, X92 extends Cell, X93 extends Cell, X94 extends Cell, X95 extends Cell, X96 extends Cell, X97 extends Cell, X98 extends Cell, X99 extends Cell,
+>() => Sudoku_<State,
+  X11, X12, X13, X14, X15, X16, X17, X18, X19,
+  X21, X22, X23, X24, X25, X26, X27, X28, X29,
+  X31, X32, X33, X34, X35, X36, X37, X38, X39,
+  X41, X42, X43, X44, X45, X46, X47, X48, X49,
+  X51, X52, X53, X54, X55, X56, X57, X58, X59,
+  X61, X62, X63, X64, X65, X66, X67, X68, X69,
+  X71, X72, X73, X74, X75, X76, X77, X78, X79,
+  X81, X82, X83, X84, X85, X86, X87, X88, X89,
+  X91, X92, X93, X94, X95, X96, X97, X98, X99
+> 
+
+type Solved = never
+
+type Unsolved = Hole
+
 export const sudoku = <
   X11 extends Cell, X12 extends Cell, X13 extends Cell, X14 extends Cell, X15 extends Cell, X16 extends Cell, X17 extends Cell, X18 extends Cell, X19 extends Cell,
   X21 extends Cell, X22 extends Cell, X23 extends Cell, X24 extends Cell, X25 extends Cell, X26 extends Cell, X27 extends Cell, X28 extends Cell, X29 extends Cell,
@@ -137,7 +165,9 @@ export const sudoku = <
   X71 extends Cell, X72 extends Cell, X73 extends Cell, X74 extends Cell, X75 extends Cell, X76 extends Cell, X77 extends Cell, X78 extends Cell, X79 extends Cell,
   X81 extends Cell, X82 extends Cell, X83 extends Cell, X84 extends Cell, X85 extends Cell, X86 extends Cell, X87 extends Cell, X88 extends Cell, X89 extends Cell,
   X91 extends Cell, X92 extends Cell, X93 extends Cell, X94 extends Cell, X95 extends Cell, X96 extends Cell, X97 extends Cell, X98 extends Cell, X99 extends Cell,
->(_: Sudoku<
+>(_: Sudoku_<
+  Unsolved,
+
   X11, X12, X13, X14, X15, X16, X17, X18, X19,
   X21, X22, X23, X24, X25, X26, X27, X28, X29,
   X31, X32, X33, X34, X35, X36, X37, X38, X39,
@@ -174,7 +204,8 @@ sudoku([
   __, _4, __, __, __, __, __, __, __,
   __, _2, _7, __, __, __, __, __, __,
 
+  __, __, __, __, __, __, __, __, _1,
   __, __, __, __, __, __, __, __, __,
   __, __, __, __, __, __, __, __, __,
-  __, __, __, __, __, __, __, __, __,
-])
+]);
+

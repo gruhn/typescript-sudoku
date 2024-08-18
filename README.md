@@ -82,7 +82,7 @@ TODO...
 
 What's nice about this approach is that the type checker highlights exactly the cells that are in conflict:
 
-![demo video: first approach](./sudoku-v1-demo.png)
+![demo: first approach](./sudoku_v1_demo.png)
 
 A downside is that the full type definition is very large (see [sudoku-v1.ts](sudoku-v1.ts)).
 Writing it out manually is tedious and error prone, 

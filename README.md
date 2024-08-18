@@ -140,7 +140,7 @@ What's particularly nice about this approach is that the type checker highlights
 
 ![demo: first approach](./sudoku_v1_demo.png)
 
-A downside is that the full type definition is very large (see [sudoku-v1.ts](sudoku-v1.ts)).
+A downside is that the full type definition is very large (see [sudoku_v1.ts](sudoku_v1.ts)).
 For each cell we have to explicitly list the other cells that are required to be different.
-Writing that out manually is tedious and error prone.
-I ended up writing a script to generate type definition (see [generate-sudoku-v1.ts](generate-sudoku-v1.ts)).
+Writing that out manually is tedious.
+I ended up writing a script to just to print out the type definition (see [generate_sudoku_v1.ts](generate_sudoku_v1.ts)).

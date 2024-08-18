@@ -81,37 +81,48 @@ type BabySudoku<
 
 Guess how many parameters the full 9-by-9 sudoku needs.
 
-TODO... why function
+A problem is that we have to provide these type parameters now when we create `BabySudoku` values:
 
 ```typescript
 const s: BabySudoku<1, 2, 3> = [ 1, 2, 3 ]
-````
+```
+
+This is redundant.
+The type parameters should get inferred from the value.
+Type parameters on functions are automatically inferred:
 
 ```typescript
 const func = <T>(val: T) => val
 
-func("hello") // no type parameter provided
-````
+func<string>("hello") // type parameter can be provided ...
+func("hello")         // ... but not necessary
+```
+
+So as a workaround we can put the type definition of `BabySudoku` into the argument of an arrow function:
 
 ```typescript
-const makeSudoku = <
+const babySudoku = <
   X1 extends Cell, 
   X2 extends Cell, 
   X3 extends Cell
 >(cells: [ X1, X2, X3 ]) => cells
-
-const s1 = makeSudoku([1, 2, 3])  // accepted
-const s2 = makeSudoku([1, 2, -3]) // type error
 ```
 
-The runtime behavior of `makeSudoku` is boring.
+With that we can construct sudokus, 
+without instantiating type parameters explicitly:
+
+```typescript
+const s = babySudoku([1, 2, 3])
+```
+
+The runtime behavior of `babySudoku` is boring.
 It just returns it's argument unchanged (aka. the identity function).
 
-Now, to ensure the all cells are different, 
+Now, to ensure that all cells are different, 
 we can use the built-in utility type [`Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers).
 
 ```typescript
-const makeSudoku = <
+const babySudoku = <
   X1 extends Cell, 
   X2 extends Cell, 
   X3 extends Cell

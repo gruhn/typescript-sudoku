@@ -1,0 +1,40 @@
+{
+  "version": "3",
+  "packages": {
+    "specifiers": {
+      "npm:@types/node@^22.4.0": "npm:@types/node@22.4.0",
+      "npm:immutable@^4.3.7": "npm:immutable@4.3.7",
+      "npm:typescript@^5.5.4": "npm:typescript@5.5.4"
+    },
+    "npm": {
+      "@types/node@22.4.0": {
+        "integrity": "sha512-49AbMDwYUz7EXxKU/r7mXOsxwFr4BYbvB7tWYxVuLdb2ibd30ijjXINSMAHiEEZk5PCRBmW1gUeisn2VMKt3cQ==",
+        "dependencies": {
+          "undici-types": "undici-types@6.19.6"
+        }
+      },
+      "immutable@4.3.7": {
+        "integrity": "sha512-1hqclzwYwjRDFLjcFxOM5AYkkG0rpFPpr1RLPMEuGczoS7YA8gLhy8SWXYRAA/XwfEHpfo3cw5JGioS32fnMRw==",
+        "dependencies": {}
+      },
+      "typescript@5.5.4": {
+        "integrity": "sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==",
+        "dependencies": {}
+      },
+      "undici-types@6.19.6": {
+        "integrity": "sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==",
+        "dependencies": {}
+      }
+    }
+  },
+  "remote": {},
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@types/node@^22.4.0",
+        "npm:immutable@^4.3.7",
+        "npm:typescript@^5.5.4"
+      ]
+    }
+  }
+}

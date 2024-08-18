@@ -117,7 +117,7 @@ export const sudoku = <
   & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
 ) => { }
 
-///////////// EXAMPLES //////////////////
+///////////// EXAMPLE SUDOKUS //////////////////
 
 // complete valid sudoku
 sudoku([
@@ -148,3 +148,4 @@ sudoku([
   _, _, _,  4, 1, 9,  _, _, 5,
   _, _, _,  _, _, _,  _, 7, _,
 ])
+

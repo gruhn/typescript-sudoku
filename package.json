@@ -5,6 +5,10 @@
   "license": "MIT",
   "description": "Sudoku type defined in TypeScript",
   "dependencies": {
+    "immutable": "^4.3.7",
     "typescript": "^5.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.4.0"
   }
 }

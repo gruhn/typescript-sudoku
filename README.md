@@ -5,7 +5,7 @@ The goal is that we can play sudoku in TypeScript while the type checker complai
 We won't implement a sudoku solver.
 This is purely an exercise in writing type definitions.
 
-![demo video: final approach](./sudoku-v2-demo.gif)
+![demo video: final approach](./sudoku_v2_demo.gif)
 
 As a first approximation we can define the type as an array of numbers:
 

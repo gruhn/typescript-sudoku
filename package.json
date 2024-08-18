@@ -1,0 +1,10 @@
+{
+  "name": "typescript-sudoku",
+  "version": "1.0.0",
+  "author": "Niklas Gruhn",
+  "license": "MIT",
+  "description": "Sudoku type defined in TypeScript",
+  "dependencies": {
+    "typescript": "^5.5.4"
+  }
+}

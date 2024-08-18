@@ -1,2 +1,3 @@
 *.js
 .direnv
+node_modules

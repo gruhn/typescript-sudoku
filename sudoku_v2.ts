@@ -115,7 +115,7 @@ export const sudoku = <
   & AllDifferent<X71, X72, X73, X81, X82, X83, X91, X92, X93>
   & AllDifferent<X74, X75, X76, X84, X85, X86, X94, X95, X96>
   & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
-) => { }
+) => grid
 
 ///////////// EXAMPLE SUDOKUS //////////////////
 
@@ -149,3 +149,15 @@ sudoku([
   _, _, _,  _, _, _,  _, 7, _,
 ])
 
+
+type BabySudoku<
+  X1 extends Cell,
+  X2 extends Cell,
+  X3 extends Cell
+> = [ 
+  Exclude<X1, X2 | X3>, 
+  Exclude<X2, X1 | X3>, 
+  Exclude<X3, X1 | X2>, 
+]
+
+const babySudoku: BabySudoku<1, 2, 3> = [ 1, 2, 3 ]

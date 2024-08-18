@@ -117,8 +117,9 @@ const s = babySudoku([1, 2, 3])
 
 The runtime behavior of `babySudoku` is boring.
 It just returns it's argument unchanged (aka. the identity function).
+This is a bit awkward but so far I haven't found a better alternative.
 
-Now, to ensure that all cells are different, 
+We still need to ensure that all cells are different, 
 we can use the built-in utility type [`Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers).
 
 ```typescript
@@ -143,4 +144,8 @@ What's particularly nice about this approach is that the type checker highlights
 A downside is that the full type definition is very large (see [sudoku_v1.ts](sudoku_v1.ts)).
 For each cell we have to explicitly list the other cells that are required to be different.
 Writing that out manually is tedious.
-I ended up writing a script to just to print out the type definition (see [generate_sudoku_v1.ts](generate_sudoku_v1.ts)).
+I ended up creating a script just to print out the type definition (see [generate_sudoku_v1.ts](generate_sudoku_v1.ts)).
+
+TODO: explain v2 approach
+
+

@@ -1,611 +1,150 @@
-enum Num1 { x }
-enum Num2 { x }
-enum Num3 { x }
-enum Num4 { x }
-enum Num5 { x }
-enum Num6 { x }
-enum Num7 { x }
-enum Num8 { x }
-enum Num9 { x }
 
-enum Hole { hole }
+type True = unknown
 
-const _1 = Num1.x
-const _2 = Num2.x
-const _3 = Num3.x
-const _4 = Num4.x
-const _5 = Num5.x
-const _6 = Num6.x
-const _7 = Num7.x
-const _8 = Num8.x
-const _9 = Num9.x
-const __ = Hole.hole
+type False = never
 
-type Sudoku<
-	X11, X12, X13, X14, X15, X16, X17, X18, X19,
-	X21, X22, X23, X24, X25, X26, X27, X28, X29,
-	X31, X32, X33, X34, X35, X36, X37, X38, X39,
+type Different<X, Y> = X extends Y ? (Y extends X ? False : True) : True
 
-	X41, X42, X43, X44, X45, X46, X47, X48, X49,
-	X51, X52, X53, X54, X55, X56, X57, X58, X59,
-	X61, X62, X63, X64, X65, X66, X67, X68, X69,
+type AllDifferent<
+  X1, X2, X3,
+  X4, X5, X6,
+  X7, X8, X9
+> = Different<X1, X2> & Different<X1, X3> & Different<X1, X3>
+  & Different<X1, X4> & Different<X1, X5> & Different<X1, X6>
+  & Different<X1, X7> & Different<X1, X8> & Different<X1, X9>
 
-	X71, X72, X73, X74, X75, X76, X77, X78, X79,
-	X81, X82, X83, X84, X85, X86, X87, X88, X89,
-	X91, X92, X93, X94, X95, X96, X97, X98, X99,
-> = [
-		Hole | Exclude<X11,
-			X12 | X13 | X14 | X15 | X16 | X17 | X18 | X19 | // row
-			X21 | X31 | X41 | X51 | X61 | X71 | X81 | X91 | // column
-			X21 | X31 | X12 | X22 | X32 | X13 | X23 | X33   // square
-		>,
+  & Different<X2, X3> & Different<X2, X4> & Different<X2, X5>
+  & Different<X2, X6> & Different<X2, X7> & Different<X2, X8>
+  & Different<X2, X9>
 
-		Hole | Exclude<X12,
-			X11 | X13 | X14 | X15 | X16 | X17 | X18 | X19 | // row
-			X22 | X32 | X42 | X52 | X62 | X72 | X82 | X92 | // column
-			X11 | X21 | X31 | X22 | X32 | X13 | X23 | X33   // square
-		>,
+  & Different<X3, X4> & Different<X3, X5> & Different<X3, X6>
+  & Different<X3, X7> & Different<X3, X8> & Different<X3, X9>
 
-		Hole | Exclude<X13,
-			X11 | X12 | X14 | X15 | X16 | X17 | X18 | X19 | // row
-			X23 | X33 | X43 | X53 | X63 | X73 | X83 | X93 | // column
-			X11 | X21 | X31 | X12 | X22 | X32 | X23 | X33   // square
-		>,
+  & Different<X4, X5> & Different<X4, X6> & Different<X4, X7>
+  & Different<X4, X8> & Different<X4, X9>
 
-		Hole | Exclude<X14,
-			X11 | X12 | X13 | X15 | X16 | X17 | X18 | X19 | // row
-			X24 | X34 | X44 | X54 | X64 | X74 | X84 | X94 | // column
-			X24 | X34 | X15 | X25 | X35 | X16 | X26 | X36   // square
-		>,
+  & Different<X5, X6> & Different<X5, X7> & Different<X5, X8>
+  & Different<X5, X9>
 
-		Hole | Exclude<X15,
-			X11 | X12 | X13 | X14 | X16 | X17 | X18 | X19 | // row
-			X25 | X35 | X45 | X55 | X65 | X75 | X85 | X95 | // column
-			X14 | X24 | X34 | X25 | X35 | X16 | X26 | X36   // square
-		>,
+  & Different<X6, X7> & Different<X6, X8> & Different<X6, X9>
 
-		Hole | Exclude<X16,
-			X11 | X12 | X13 | X14 | X15 | X17 | X18 | X19 | // row
-			X26 | X36 | X46 | X56 | X66 | X76 | X86 | X96 | // column
-			X14 | X24 | X34 | X15 | X25 | X35 | X26 | X36   // square
-		>,
+  & Different<X7, X8> & Different<X7, X9>
 
-		Hole | Exclude<X17,
-			X11 | X12 | X13 | X14 | X15 | X16 | X18 | X19 | // row
-			X27 | X37 | X47 | X57 | X67 | X77 | X87 | X97 | // column
-			X27 | X37 | X18 | X28 | X38 | X19 | X29 | X39   // square
-		>,
+  & Different<X8, X9>
 
-		Hole | Exclude<X18,
-			X11 | X12 | X13 | X14 | X15 | X16 | X17 | X19 | // row
-			X28 | X38 | X48 | X58 | X68 | X78 | X88 | X98 | // column
-			X17 | X27 | X37 | X28 | X38 | X19 | X29 | X39   // square
-		>,
+const _ = Symbol('hole')
 
-		Hole | Exclude<X19,
-			X11 | X12 | X13 | X14 | X15 | X16 | X17 | X18 | // row
-			X29 | X39 | X49 | X59 | X69 | X79 | X89 | X99 | // column
-			X17 | X27 | X37 | X18 | X28 | X38 | X29 | X39   // square
-		>,
+type Hole = typeof _
 
-		Hole | Exclude<X21,
-			X22 | X23 | X24 | X25 | X26 | X27 | X28 | X29 | // row
-			X11 | X31 | X41 | X51 | X61 | X71 | X81 | X91 | // column
-			X11 | X31 | X12 | X22 | X32 | X13 | X23 | X33   // square
-		>,
-
-		Hole | Exclude<X22,
-			X21 | X23 | X24 | X25 | X26 | X27 | X28 | X29 | // row
-			X12 | X32 | X42 | X52 | X62 | X72 | X82 | X92 | // column
-			X11 | X21 | X31 | X12 | X32 | X13 | X23 | X33   // square
-		>,
-
-		Hole | Exclude<X23,
-			X21 | X22 | X24 | X25 | X26 | X27 | X28 | X29 | // row
-			X13 | X33 | X43 | X53 | X63 | X73 | X83 | X93 | // column
-			X11 | X21 | X31 | X12 | X22 | X32 | X13 | X33   // square
-		>,
-
-		Hole | Exclude<X24,
-			X21 | X22 | X23 | X25 | X26 | X27 | X28 | X29 | // row
-			X14 | X34 | X44 | X54 | X64 | X74 | X84 | X94 | // column
-			X14 | X34 | X15 | X25 | X35 | X16 | X26 | X36   // square
-		>,
-
-		Hole | Exclude<X25,
-			X21 | X22 | X23 | X24 | X26 | X27 | X28 | X29 | // row
-			X15 | X35 | X45 | X55 | X65 | X75 | X85 | X95 | // column
-			X14 | X24 | X34 | X15 | X35 | X16 | X26 | X36   // square
-		>,
-
-		Hole | Exclude<X26,
-			X21 | X22 | X23 | X24 | X25 | X27 | X28 | X29 | // row
-			X16 | X36 | X46 | X56 | X66 | X76 | X86 | X96 | // column
-			X14 | X24 | X34 | X15 | X25 | X35 | X16 | X36   // square
-		>,
-
-		Hole | Exclude<X27,
-			X21 | X22 | X23 | X24 | X25 | X26 | X28 | X29 | // row
-			X17 | X37 | X47 | X57 | X67 | X77 | X87 | X97 | // column
-			X17 | X37 | X18 | X28 | X38 | X19 | X29 | X39   // square
-		>,
-
-		Hole | Exclude<X28,
-			X21 | X22 | X23 | X24 | X25 | X26 | X27 | X29 | // row
-			X18 | X38 | X48 | X58 | X68 | X78 | X88 | X98 | // column
-			X17 | X27 | X37 | X18 | X38 | X19 | X29 | X39   // square
-		>,
-
-		Hole | Exclude<X29,
-			X21 | X22 | X23 | X24 | X25 | X26 | X27 | X28 | // row
-			X19 | X39 | X49 | X59 | X69 | X79 | X89 | X99 | // column
-			X17 | X27 | X37 | X18 | X28 | X38 | X19 | X39   // square
-		>,
-
-		Hole | Exclude<X31,
-			X32 | X33 | X34 | X35 | X36 | X37 | X38 | X39 | // row
-			X11 | X21 | X41 | X51 | X61 | X71 | X81 | X91 | // column
-			X11 | X21 | X12 | X22 | X32 | X13 | X23 | X33   // square
-		>,
-
-		Hole | Exclude<X32,
-			X31 | X33 | X34 | X35 | X36 | X37 | X38 | X39 | // row
-			X12 | X22 | X42 | X52 | X62 | X72 | X82 | X92 | // column
-			X11 | X21 | X31 | X12 | X22 | X13 | X23 | X33   // square
-		>,
-
-		Hole | Exclude<X33,
-			X31 | X32 | X34 | X35 | X36 | X37 | X38 | X39 | // row
-			X13 | X23 | X43 | X53 | X63 | X73 | X83 | X93 | // column
-			X11 | X21 | X31 | X12 | X22 | X32 | X13 | X23   // square
-		>,
-
-		Hole | Exclude<X34,
-			X31 | X32 | X33 | X35 | X36 | X37 | X38 | X39 | // row
-			X14 | X24 | X44 | X54 | X64 | X74 | X84 | X94 | // column
-			X14 | X24 | X15 | X25 | X35 | X16 | X26 | X36   // square
-		>,
-
-		Hole | Exclude<X35,
-			X31 | X32 | X33 | X34 | X36 | X37 | X38 | X39 | // row
-			X15 | X25 | X45 | X55 | X65 | X75 | X85 | X95 | // column
-			X14 | X24 | X34 | X15 | X25 | X16 | X26 | X36   // square
-		>,
-
-		Hole | Exclude<X36,
-			X31 | X32 | X33 | X34 | X35 | X37 | X38 | X39 | // row
-			X16 | X26 | X46 | X56 | X66 | X76 | X86 | X96 | // column
-			X14 | X24 | X34 | X15 | X25 | X35 | X16 | X26   // square
-		>,
-
-		Hole | Exclude<X37,
-			X31 | X32 | X33 | X34 | X35 | X36 | X38 | X39 | // row
-			X17 | X27 | X47 | X57 | X67 | X77 | X87 | X97 | // column
-			X17 | X27 | X18 | X28 | X38 | X19 | X29 | X39   // square
-		>,
-
-		Hole | Exclude<X38,
-			X31 | X32 | X33 | X34 | X35 | X36 | X37 | X39 | // row
-			X18 | X28 | X48 | X58 | X68 | X78 | X88 | X98 | // column
-			X17 | X27 | X37 | X18 | X28 | X19 | X29 | X39   // square
-		>,
-
-		Hole | Exclude<X39,
-			X31 | X32 | X33 | X34 | X35 | X36 | X37 | X38 | // row
-			X19 | X29 | X49 | X59 | X69 | X79 | X89 | X99 | // column
-			X17 | X27 | X37 | X18 | X28 | X38 | X19 | X29   // square
-		>,
-
-		Hole | Exclude<X41,
-			X42 | X43 | X44 | X45 | X46 | X47 | X48 | X49 | // row
-			X11 | X21 | X31 | X51 | X61 | X71 | X81 | X91 | // column
-			X51 | X61 | X42 | X52 | X62 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X42,
-			X41 | X43 | X44 | X45 | X46 | X47 | X48 | X49 | // row
-			X12 | X22 | X32 | X52 | X62 | X72 | X82 | X92 | // column
-			X41 | X51 | X61 | X52 | X62 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X43,
-			X41 | X42 | X44 | X45 | X46 | X47 | X48 | X49 | // row
-			X13 | X23 | X33 | X53 | X63 | X73 | X83 | X93 | // column
-			X41 | X51 | X61 | X42 | X52 | X62 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X44,
-			X41 | X42 | X43 | X45 | X46 | X47 | X48 | X49 | // row
-			X14 | X24 | X34 | X54 | X64 | X74 | X84 | X94 | // column
-			X54 | X64 | X45 | X55 | X65 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X45,
-			X41 | X42 | X43 | X44 | X46 | X47 | X48 | X49 | // row
-			X15 | X25 | X35 | X55 | X65 | X75 | X85 | X95 | // column
-			X44 | X54 | X64 | X55 | X65 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X46,
-			X41 | X42 | X43 | X44 | X45 | X47 | X48 | X49 | // row
-			X16 | X26 | X36 | X56 | X66 | X76 | X86 | X96 | // column
-			X44 | X54 | X64 | X45 | X55 | X65 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X47,
-			X41 | X42 | X43 | X44 | X45 | X46 | X48 | X49 | // row
-			X17 | X27 | X37 | X57 | X67 | X77 | X87 | X97 | // column
-			X57 | X67 | X48 | X58 | X68 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X48,
-			X41 | X42 | X43 | X44 | X45 | X46 | X47 | X49 | // row
-			X18 | X28 | X38 | X58 | X68 | X78 | X88 | X98 | // column
-			X47 | X57 | X67 | X58 | X68 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X49,
-			X41 | X42 | X43 | X44 | X45 | X46 | X47 | X48 | // row
-			X19 | X29 | X39 | X59 | X69 | X79 | X89 | X99 | // column
-			X47 | X57 | X67 | X48 | X58 | X68 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X51,
-			X52 | X53 | X54 | X55 | X56 | X57 | X58 | X59 | // row
-			X11 | X21 | X31 | X41 | X61 | X71 | X81 | X91 | // column
-			X41 | X61 | X42 | X52 | X62 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X52,
-			X51 | X53 | X54 | X55 | X56 | X57 | X58 | X59 | // row
-			X12 | X22 | X32 | X42 | X62 | X72 | X82 | X92 | // column
-			X41 | X51 | X61 | X42 | X62 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X53,
-			X51 | X52 | X54 | X55 | X56 | X57 | X58 | X59 | // row
-			X13 | X23 | X33 | X43 | X63 | X73 | X83 | X93 | // column
-			X41 | X51 | X61 | X42 | X52 | X62 | X43 | X63   // square
-		>,
-
-		Hole | Exclude<X54,
-			X51 | X52 | X53 | X55 | X56 | X57 | X58 | X59 | // row
-			X14 | X24 | X34 | X44 | X64 | X74 | X84 | X94 | // column
-			X44 | X64 | X45 | X55 | X65 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X55,
-			X51 | X52 | X53 | X54 | X56 | X57 | X58 | X59 | // row
-			X15 | X25 | X35 | X45 | X65 | X75 | X85 | X95 | // column
-			X44 | X54 | X64 | X45 | X65 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X56,
-			X51 | X52 | X53 | X54 | X55 | X57 | X58 | X59 | // row
-			X16 | X26 | X36 | X46 | X66 | X76 | X86 | X96 | // column
-			X44 | X54 | X64 | X45 | X55 | X65 | X46 | X66   // square
-		>,
-
-		Hole | Exclude<X57,
-			X51 | X52 | X53 | X54 | X55 | X56 | X58 | X59 | // row
-			X17 | X27 | X37 | X47 | X67 | X77 | X87 | X97 | // column
-			X47 | X67 | X48 | X58 | X68 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X58,
-			X51 | X52 | X53 | X54 | X55 | X56 | X57 | X59 | // row
-			X18 | X28 | X38 | X48 | X68 | X78 | X88 | X98 | // column
-			X47 | X57 | X67 | X48 | X68 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X59,
-			X51 | X52 | X53 | X54 | X55 | X56 | X57 | X58 | // row
-			X19 | X29 | X39 | X49 | X69 | X79 | X89 | X99 | // column
-			X47 | X57 | X67 | X48 | X58 | X68 | X49 | X69   // square
-		>,
-
-		Hole | Exclude<X61,
-			X62 | X63 | X64 | X65 | X66 | X67 | X68 | X69 | // row
-			X11 | X21 | X31 | X41 | X51 | X71 | X81 | X91 | // column
-			X41 | X51 | X42 | X52 | X62 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X62,
-			X61 | X63 | X64 | X65 | X66 | X67 | X68 | X69 | // row
-			X12 | X22 | X32 | X42 | X52 | X72 | X82 | X92 | // column
-			X41 | X51 | X61 | X42 | X52 | X43 | X53 | X63   // square
-		>,
-
-		Hole | Exclude<X63,
-			X61 | X62 | X64 | X65 | X66 | X67 | X68 | X69 | // row
-			X13 | X23 | X33 | X43 | X53 | X73 | X83 | X93 | // column
-			X41 | X51 | X61 | X42 | X52 | X62 | X43 | X53   // square
-		>,
-
-		Hole | Exclude<X64,
-			X61 | X62 | X63 | X65 | X66 | X67 | X68 | X69 | // row
-			X14 | X24 | X34 | X44 | X54 | X74 | X84 | X94 | // column
-			X44 | X54 | X45 | X55 | X65 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X65,
-			X61 | X62 | X63 | X64 | X66 | X67 | X68 | X69 | // row
-			X15 | X25 | X35 | X45 | X55 | X75 | X85 | X95 | // column
-			X44 | X54 | X64 | X45 | X55 | X46 | X56 | X66   // square
-		>,
-
-		Hole | Exclude<X66,
-			X61 | X62 | X63 | X64 | X65 | X67 | X68 | X69 | // row
-			X16 | X26 | X36 | X46 | X56 | X76 | X86 | X96 | // column
-			X44 | X54 | X64 | X45 | X55 | X65 | X46 | X56   // square
-		>,
-
-		Hole | Exclude<X67,
-			X61 | X62 | X63 | X64 | X65 | X66 | X68 | X69 | // row
-			X17 | X27 | X37 | X47 | X57 | X77 | X87 | X97 | // column
-			X47 | X57 | X48 | X58 | X68 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X68,
-			X61 | X62 | X63 | X64 | X65 | X66 | X67 | X69 | // row
-			X18 | X28 | X38 | X48 | X58 | X78 | X88 | X98 | // column
-			X47 | X57 | X67 | X48 | X58 | X49 | X59 | X69   // square
-		>,
-
-		Hole | Exclude<X69,
-			X61 | X62 | X63 | X64 | X65 | X66 | X67 | X68 | // row
-			X19 | X29 | X39 | X49 | X59 | X79 | X89 | X99 | // column
-			X47 | X57 | X67 | X48 | X58 | X68 | X49 | X59   // square
-		>,
-
-		Hole | Exclude<X71,
-			X72 | X73 | X74 | X75 | X76 | X77 | X78 | X79 | // row
-			X11 | X21 | X31 | X41 | X51 | X61 | X81 | X91 | // column
-			X81 | X91 | X72 | X82 | X92 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X72,
-			X71 | X73 | X74 | X75 | X76 | X77 | X78 | X79 | // row
-			X12 | X22 | X32 | X42 | X52 | X62 | X82 | X92 | // column
-			X71 | X81 | X91 | X82 | X92 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X73,
-			X71 | X72 | X74 | X75 | X76 | X77 | X78 | X79 | // row
-			X13 | X23 | X33 | X43 | X53 | X63 | X83 | X93 | // column
-			X71 | X81 | X91 | X72 | X82 | X92 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X74,
-			X71 | X72 | X73 | X75 | X76 | X77 | X78 | X79 | // row
-			X14 | X24 | X34 | X44 | X54 | X64 | X84 | X94 | // column
-			X84 | X94 | X75 | X85 | X95 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X75,
-			X71 | X72 | X73 | X74 | X76 | X77 | X78 | X79 | // row
-			X15 | X25 | X35 | X45 | X55 | X65 | X85 | X95 | // column
-			X74 | X84 | X94 | X85 | X95 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X76,
-			X71 | X72 | X73 | X74 | X75 | X77 | X78 | X79 | // row
-			X16 | X26 | X36 | X46 | X56 | X66 | X86 | X96 | // column
-			X74 | X84 | X94 | X75 | X85 | X95 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X77,
-			X71 | X72 | X73 | X74 | X75 | X76 | X78 | X79 | // row
-			X17 | X27 | X37 | X47 | X57 | X67 | X87 | X97 | // column
-			X87 | X97 | X78 | X88 | X98 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X78,
-			X71 | X72 | X73 | X74 | X75 | X76 | X77 | X79 | // row
-			X18 | X28 | X38 | X48 | X58 | X68 | X88 | X98 | // column
-			X77 | X87 | X97 | X88 | X98 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X79,
-			X71 | X72 | X73 | X74 | X75 | X76 | X77 | X78 | // row
-			X19 | X29 | X39 | X49 | X59 | X69 | X89 | X99 | // column
-			X77 | X87 | X97 | X78 | X88 | X98 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X81,
-			X82 | X83 | X84 | X85 | X86 | X87 | X88 | X89 | // row
-			X11 | X21 | X31 | X41 | X51 | X61 | X71 | X91 | // column
-			X71 | X91 | X72 | X82 | X92 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X82,
-			X81 | X83 | X84 | X85 | X86 | X87 | X88 | X89 | // row
-			X12 | X22 | X32 | X42 | X52 | X62 | X72 | X92 | // column
-			X71 | X81 | X91 | X72 | X92 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X83,
-			X81 | X82 | X84 | X85 | X86 | X87 | X88 | X89 | // row
-			X13 | X23 | X33 | X43 | X53 | X63 | X73 | X93 | // column
-			X71 | X81 | X91 | X72 | X82 | X92 | X73 | X93   // square
-		>,
-
-		Hole | Exclude<X84,
-			X81 | X82 | X83 | X85 | X86 | X87 | X88 | X89 | // row
-			X14 | X24 | X34 | X44 | X54 | X64 | X74 | X94 | // column
-			X74 | X94 | X75 | X85 | X95 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X85,
-			X81 | X82 | X83 | X84 | X86 | X87 | X88 | X89 | // row
-			X15 | X25 | X35 | X45 | X55 | X65 | X75 | X95 | // column
-			X74 | X84 | X94 | X75 | X95 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X86,
-			X81 | X82 | X83 | X84 | X85 | X87 | X88 | X89 | // row
-			X16 | X26 | X36 | X46 | X56 | X66 | X76 | X96 | // column
-			X74 | X84 | X94 | X75 | X85 | X95 | X76 | X96   // square
-		>,
-
-		Hole | Exclude<X87,
-			X81 | X82 | X83 | X84 | X85 | X86 | X88 | X89 | // row
-			X17 | X27 | X37 | X47 | X57 | X67 | X77 | X97 | // column
-			X77 | X97 | X78 | X88 | X98 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X88,
-			X81 | X82 | X83 | X84 | X85 | X86 | X87 | X89 | // row
-			X18 | X28 | X38 | X48 | X58 | X68 | X78 | X98 | // column
-			X77 | X87 | X97 | X78 | X98 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X89,
-			X81 | X82 | X83 | X84 | X85 | X86 | X87 | X88 | // row
-			X19 | X29 | X39 | X49 | X59 | X69 | X79 | X99 | // column
-			X77 | X87 | X97 | X78 | X88 | X98 | X79 | X99   // square
-		>,
-
-		Hole | Exclude<X91,
-			X92 | X93 | X94 | X95 | X96 | X97 | X98 | X99 | // row
-			X11 | X21 | X31 | X41 | X51 | X61 | X71 | X81 | // column
-			X71 | X81 | X72 | X82 | X92 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X92,
-			X91 | X93 | X94 | X95 | X96 | X97 | X98 | X99 | // row
-			X12 | X22 | X32 | X42 | X52 | X62 | X72 | X82 | // column
-			X71 | X81 | X91 | X72 | X82 | X73 | X83 | X93   // square
-		>,
-
-		Hole | Exclude<X93,
-			X91 | X92 | X94 | X95 | X96 | X97 | X98 | X99 | // row
-			X13 | X23 | X33 | X43 | X53 | X63 | X73 | X83 | // column
-			X71 | X81 | X91 | X72 | X82 | X92 | X73 | X83   // square
-		>,
-
-		Hole | Exclude<X94,
-			X91 | X92 | X93 | X95 | X96 | X97 | X98 | X99 | // row
-			X14 | X24 | X34 | X44 | X54 | X64 | X74 | X84 | // column
-			X74 | X84 | X75 | X85 | X95 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X95,
-			X91 | X92 | X93 | X94 | X96 | X97 | X98 | X99 | // row
-			X15 | X25 | X35 | X45 | X55 | X65 | X75 | X85 | // column
-			X74 | X84 | X94 | X75 | X85 | X76 | X86 | X96   // square
-		>,
-
-		Hole | Exclude<X96,
-			X91 | X92 | X93 | X94 | X95 | X97 | X98 | X99 | // row
-			X16 | X26 | X36 | X46 | X56 | X66 | X76 | X86 | // column
-			X74 | X84 | X94 | X75 | X85 | X95 | X76 | X86   // square
-		>,
-
-		Hole | Exclude<X97,
-			X91 | X92 | X93 | X94 | X95 | X96 | X98 | X99 | // row
-			X17 | X27 | X37 | X47 | X57 | X67 | X77 | X87 | // column
-			X77 | X87 | X78 | X88 | X98 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X98,
-			X91 | X92 | X93 | X94 | X95 | X96 | X97 | X99 | // row
-			X18 | X28 | X38 | X48 | X58 | X68 | X78 | X88 | // column
-			X77 | X87 | X97 | X78 | X88 | X79 | X89 | X99   // square
-		>,
-
-		Hole | Exclude<X99,
-			X91 | X92 | X93 | X94 | X95 | X96 | X97 | X98 | // row
-			X19 | X29 | X39 | X49 | X59 | X69 | X79 | X89 | // column
-			X77 | X87 | X97 | X78 | X88 | X98 | X79 | X89   // square
-		>,
-	]
+type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export const sudoku = <
-	X11, X12, X13, X14, X15, X16, X17, X18, X19,
-	X21, X22, X23, X24, X25, X26, X27, X28, X29,
-	X31, X32, X33, X34, X35, X36, X37, X38, X39,
-	X41, X42, X43, X44, X45, X46, X47, X48, X49,
-	X51, X52, X53, X54, X55, X56, X57, X58, X59,
-	X61, X62, X63, X64, X65, X66, X67, X68, X69,
-	X71, X72, X73, X74, X75, X76, X77, X78, X79,
-	X81, X82, X83, X84, X85, X86, X87, X88, X89,
-	X91, X92, X93, X94, X95, X96, X97, X98, X99
->(_: Sudoku<
-	X11, X12, X13, X14, X15, X16, X17, X18, X19,
-	X21, X22, X23, X24, X25, X26, X27, X28, X29,
-	X31, X32, X33, X34, X35, X36, X37, X38, X39,
-	X41, X42, X43, X44, X45, X46, X47, X48, X49,
-	X51, X52, X53, X54, X55, X56, X57, X58, X59,
-	X61, X62, X63, X64, X65, X66, X67, X68, X69,
-	X71, X72, X73, X74, X75, X76, X77, X78, X79,
-	X81, X82, X83, X84, X85, X86, X87, X88, X89,
-	X91, X92, X93, X94, X95, X96, X97, X98, X99
->) => { }
+  const X11 extends Cell, const X12 extends Cell, const X13 extends Cell, 
+  const X14 extends Cell, const X15 extends Cell, const X16 extends Cell, 
+  const X17 extends Cell, const X18 extends Cell, const X19 extends Cell,
+  const X21 extends Cell, const X22 extends Cell, const X23 extends Cell, 
+  const X24 extends Cell, const X25 extends Cell, const X26 extends Cell, 
+  const X27 extends Cell, const X28 extends Cell, const X29 extends Cell,
+  const X31 extends Cell, const X32 extends Cell, const X33 extends Cell, 
+  const X34 extends Cell, const X35 extends Cell, const X36 extends Cell, 
+  const X37 extends Cell, const X38 extends Cell, const X39 extends Cell,
+  const X41 extends Cell, const X42 extends Cell, const X43 extends Cell, 
+  const X44 extends Cell, const X45 extends Cell, const X46 extends Cell, 
+  const X47 extends Cell, const X48 extends Cell, const X49 extends Cell,
+  const X51 extends Cell, const X52 extends Cell, const X53 extends Cell, 
+  const X54 extends Cell, const X55 extends Cell, const X56 extends Cell, 
+  const X57 extends Cell, const X58 extends Cell, const X59 extends Cell,
+  const X61 extends Cell, const X62 extends Cell, const X63 extends Cell, 
+  const X64 extends Cell, const X65 extends Cell, const X66 extends Cell, 
+  const X67 extends Cell, const X68 extends Cell, const X69 extends Cell,
+  const X71 extends Cell, const X72 extends Cell, const X73 extends Cell, 
+  const X74 extends Cell, const X75 extends Cell, const X76 extends Cell, 
+  const X77 extends Cell, const X78 extends Cell, const X79 extends Cell,
+  const X81 extends Cell, const X82 extends Cell, const X83 extends Cell, 
+  const X84 extends Cell, const X85 extends Cell, const X86 extends Cell, 
+  const X87 extends Cell, const X88 extends Cell, const X89 extends Cell,
+  const X91 extends Cell, const X92 extends Cell, const X93 extends Cell, 
+  const X94 extends Cell, const X95 extends Cell, const X96 extends Cell, 
+  const X97 extends Cell, const X98 extends Cell, const X99 extends Cell,
+>(grid:
+  [
+    X11 | Hole, X12 | Hole, X13 | Hole, X14 | Hole, X15 | Hole, X16 | Hole, X17 | Hole, X18 | Hole, X19 | Hole,
+    X21 | Hole, X22 | Hole, X23 | Hole, X24 | Hole, X25 | Hole, X26 | Hole, X27 | Hole, X28 | Hole, X29 | Hole,
+    X31 | Hole, X32 | Hole, X33 | Hole, X34 | Hole, X35 | Hole, X36 | Hole, X37 | Hole, X38 | Hole, X39 | Hole,
+    X41 | Hole, X42 | Hole, X43 | Hole, X44 | Hole, X45 | Hole, X46 | Hole, X47 | Hole, X48 | Hole, X49 | Hole,
+    X51 | Hole, X52 | Hole, X53 | Hole, X54 | Hole, X55 | Hole, X56 | Hole, X57 | Hole, X58 | Hole, X59 | Hole,
+    X61 | Hole, X62 | Hole, X63 | Hole, X64 | Hole, X65 | Hole, X66 | Hole, X67 | Hole, X68 | Hole, X69 | Hole,
+    X71 | Hole, X72 | Hole, X73 | Hole, X74 | Hole, X75 | Hole, X76 | Hole, X77 | Hole, X78 | Hole, X79 | Hole,
+    X81 | Hole, X82 | Hole, X83 | Hole, X84 | Hole, X85 | Hole, X86 | Hole, X87 | Hole, X88 | Hole, X89 | Hole,
+    X91 | Hole, X92 | Hole, X93 | Hole, X94 | Hole, X95 | Hole, X96 | Hole, X97 | Hole, X98 | Hole, X99 | Hole,
+  ]
 
+  // all 9 rows
+  & AllDifferent<X11, X12, X13, X14, X15, X16, X17, X18, X19>
+  & AllDifferent<X21, X22, X23, X24, X25, X26, X27, X28, X29>
+  & AllDifferent<X31, X32, X33, X34, X35, X36, X37, X38, X39>
+  & AllDifferent<X41, X42, X43, X44, X45, X46, X47, X48, X49>
+  & AllDifferent<X51, X52, X53, X54, X55, X56, X57, X58, X59>
+  & AllDifferent<X61, X62, X63, X64, X65, X66, X67, X68, X69>
+  & AllDifferent<X71, X72, X73, X74, X75, X76, X77, X78, X79>
+  & AllDifferent<X81, X82, X83, X84, X85, X86, X87, X88, X89>
+  & AllDifferent<X91, X92, X93, X94, X95, X96, X97, X98, X99>
+
+  // all 9 columns
+  & AllDifferent<X11, X21, X31, X41, X51, X61, X71, X81, X91>
+  & AllDifferent<X12, X22, X32, X42, X52, X62, X72, X82, X92>
+  & AllDifferent<X13, X23, X33, X43, X53, X63, X73, X83, X93>
+  & AllDifferent<X14, X24, X34, X44, X54, X64, X74, X84, X94>
+  & AllDifferent<X15, X25, X35, X45, X55, X65, X75, X85, X95>
+  & AllDifferent<X16, X26, X36, X46, X56, X66, X76, X86, X96>
+  & AllDifferent<X17, X27, X37, X47, X57, X67, X77, X87, X97>
+  & AllDifferent<X18, X28, X38, X48, X58, X68, X78, X88, X98>
+  & AllDifferent<X19, X29, X39, X49, X59, X69, X79, X89, X99>
+
+  // three upper squares
+  & AllDifferent<X11, X12, X13, X21, X22, X23, X31, X32, X33>
+  & AllDifferent<X14, X15, X16, X24, X25, X26, X34, X35, X36>
+  & AllDifferent<X17, X18, X19, X27, X28, X29, X37, X38, X39>
+
+  // three center squares
+  & AllDifferent<X41, X42, X43, X51, X52, X53, X61, X62, X63>
+  & AllDifferent<X44, X45, X46, X54, X55, X56, X64, X65, X66>
+  & AllDifferent<X47, X48, X49, X57, X58, X59, X67, X68, X69>
+
+  // three lower squares
+  & AllDifferent<X71, X72, X73, X81, X82, X83, X91, X92, X93>
+  & AllDifferent<X74, X75, X76, X84, X85, X86, X94, X95, X96>
+  & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
+) => { }
+
+///////////// EXAMPLES //////////////////
+
+// complete valid sudoku
 sudoku([
-	_7, _9, _2, _3, _5, _4, _6, _1, _8,
-	_8, _5, _4, _1, _2, _6, _3, _9, _7,
-	_3, _6, _1, _9, _8, _7, _5, _2, _4,
+  7, 9, 2,  3, 5, 4,  6, 1, 8,
+  8, 5, 4,  1, 2, 6,  3, 9, 7,
+  3, 6, 1,  9, 8, 7,  5, 2, 4,
 
-	_9, _4, _5, _6, _3, _8, _1, _7, _2,
-	_2, _7, _8, _5, _4, _1, _9, _3, _6,
-	_6, _1, _3, _7, _9, _2, _8, _4, _5,
+  9, 4, 5,  6, 3, 8,  1, 7, 2,
+  2, 7, 8,  5, 4, 1,  9, 3, 6,
+  6, 1, 3,  7, 9, 2,  8, 4, 5,
 
-	_4, _2, _9, _8, _1, _5, _7, _6, _3,
-	_1, _8, _7, _2, _6, _3, _4, _5, _9,
-	_5, _3, _6, _4, _7, _9, _2, _8, _1,
+  4, 2, 9,  8, 1, 5,  7, 6, 3,
+  1, 8, 7,  2, 6, 3,  4, 5, 9,
+  5, 3, 6,  4, 7, 9,  2, 8, 1,
 ])
 
+// incomplete valid sudoku
 sudoku([
-	_1, _9, _8, _2, _3, _4, _7, __, __,
-	__, _5, __, _7, _9, __, __, __, __,
-	__, _3, _4, __, __, __, __, __, __,
+  _, 3, _,  _, _, _,  _, _, _,
+  _, _, _,  1, 9, 5,  _, _, _,
+  _, _, 8,  _, _, _,  _, 6, _,
 
-	__, _1, __, __, __, __, __, __, __,
-	__, _4, __, __, __, __, __, __, __,
-	__, _2, _7, __, __, __, __, __, __,
+  8, _, _,  _, 6, _,  _, _, _,
+  4, _, _,  8, _, _,  _, _, 1,
+  _, _, _,  _, 2, _,  _, _, _,
 
-	__, __, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __, __,
-	__, __, __, __, __, __, __, __, __,
+  _, 6, _,  _, _, _,  2, 8, _,
+  _, _, _,  4, 1, 9,  _, _, 5,
+  _, _, _,  _, _, _,  _, 7, _,
 ])
-
-// const print = () => {
-// 	const nums = [1,2,3,4,5,6,7,8,9]
-
-// 	for (const i of nums) {
-// 		for (const j of nums) {
-// 			const cell = `X${i}${j}`
-
-// 			const row = nums.map(num => `X${i}${num}`)
-// 				.filter(c => cell !== c)
-// 				.join(' | ')
-
-// 			const col = nums.map(num => `X${num}${j}`)
-// 				.filter(c => cell !== c)
-// 				.join(' | ')
-
-// 			const x = Math.ceil(i / 3) * 3 - 1
-// 			const y = Math.ceil(j / 3) * 3 - 1
-
-// 			const sqr = [ 
-// 				[x-1, y-1], [x, y-1], [x+1, y-1],
-// 				[x-1,   y], [x,   y], [x+1,   y],
-// 				[x-1, y+1], [x, y+1], [x+1, y+1]
-// 		  ].map(([x,y]) => `X${x}${y}`)
-// 				.filter(c => cell !== c)
-// 				.join(' | ')
-
-// 			cosole.log(`
-// 				Hole | Exclude<${cell}, 
-// 					${row} | // row
-// 					${col} | // column
-// 				 	${sqr}   // square
-// 				>,		
-// 			`)
-// 		}	
-// 	}
-// }
-
-// print()

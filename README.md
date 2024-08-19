@@ -166,7 +166,7 @@ that it is equal to `never` IF constraints are violated.
 
 `unknown` is a super-type of everything similar, to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
 
-![type hierarchie](./type-hierarchie.png)
+<img alt="type hierarchie" src="./type-hierarchie.png" height="300px" />
 
 I find it useful to think of `unknown` and `never` as type-level analogs of `true` and `false`.
 Because in combination with union types (`A | B`) and intersection types (`A & B`), 
@@ -218,7 +218,7 @@ IF some sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>`
 The intersection with the empty type is always the empty type, 
 so whole type definition "collapses" down to `never`.
 
-<img alt="Venn diagram: never intersection" src="intersect_never.png" />
+<img alt="Venn diagram: never intersection" src="intersect_never.png" height="250px" />
 
 IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
 
@@ -228,6 +228,6 @@ IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>`
 
 The intersection with `unknown` just leaves the number grid alone.
 
-<img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" />
+<img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" height="250px" />
 
 

@@ -119,6 +119,8 @@ The runtime behavior of `babySudoku` is boring.
 It just returns it's argument unchanged (aka. the identity function).
 This is a bit awkward but so far I haven't found a better alternative.
 
+## Constraints using `Exclude`
+
 We still need to ensure that all cells are different, 
 we can use the built-in utility type [`Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers).
 
@@ -141,11 +143,91 @@ What's particularly nice about this approach is that the type checker highlights
 
 ![demo: first approach](./sudoku_v1_demo.png)
 
-A downside is that the full type definition is very large (see [sudoku_v1.ts](sudoku_v1.ts)).
+A downside is that the [full type definition](sudoku_v1.ts) is very large.
 For each cell we have to explicitly list the other cells that are required to be different.
 Writing that out manually is tedious.
-I ended up creating a script just to print out the type definition (see [generate_sudoku_v1.ts](generate_sudoku_v1.ts)).
+I ended up [creating a script](generate_sudoku_v1.ts) just to print out the type definition.
 
-TODO: explain v2 approach
+I came up with another approach that has more compact type definitions. 
+Before we can talk about that we need to talk about the types `unknown` and `never`.
+
+## Interlude: `unknown` and `never`
+
+`never` is the empty type, which makes it a sub-type of everything.
+There is no value that has type `never`. 
+So you always get a type error no matter what you write on the right-hand side of `const value: never = ???`.
+That is, unless the assignment is unreachable or you use some malicous type cast: 
+```typescript
+const value: never = "obviously not never" as never
+```
+`never` is useful to strategically provoke a type error.
+The plan is to formulate the sudoku type in such a way, 
+that it is equal to `never` IF constraints are violated.
+
+`unknown` is a super-type of everything similar, to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
+
+TODO: venn diagram
+
+I find it useful to think of `unknown` and `never` as type-level analogs of `true` and `false`.
+Because in combination with union types (`A | B`) and intersection types (`A & B`), 
+`unknown` and `never` behave just like boolean OR (`a || b`) and boolean AND (`a && b`).
+Notice the syntactic similarity of these operators.
+For example, `unknown | never` is `unknown`, i.e. building the union of *absolutely-everything* and *absolutely-nothing* gives *absolutely-everything*.
+Analogously, `true || false` is `true`.
+
+Let's define type aliases, to make the relationship more obvious:
+```typescript
+type True = unknown
+type False = never
+```
+With that we have:
+
+| Term-level                    | Type-level                  | 
+| ----------------------------- | --------------------------- |
+| `true && true` is `true`      | `True & True` is `True`     |
+| `true && false` is `false`    | `True & False` is `False`   |
+| `true \|\| false` is `true`   | `True \| False` is `True`   |
+| `false \|\| false` is `false` | `False \| False` is `False` |
+| ...                           | ...                         |
+
+Now that we can talk about booleans on the type-level, 
+we can formulate arbitrary boolean constraints inside type definitions.
+
+## Constraints using Type-Level Predicates
+
+The plan is come of with some type-level boolean expression that describes the (baby-)sudoku constraints:
+```typescript
+type CheckSudokuConstraints<X1, X2, X3> = ??? // "returns" either `unknown` or `never`
+```
+At this point we can think of `CheckSudokuConstraints` as a function that returns `true` or `false` (aka. a predicate).
+The analogous term-level function would look like this:
+```typescript
+function checkSudokuRules(x1: Cell, x2: Cell, x3: Cell): boolean {
+   return ???
+}
+```
+
+Once we know how to define `CheckSudokuConstraints` we build the intersection with the actual number grid:
+```typescript
+[ X1, X2, X3 ] & CheckSudokuConstraints<X1, X2, X3>
+```
+IF some sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `never` and we get:
+```typescript
+[ X1, X2, X3 ] & never             // === never
+```
+The intersection with the empty type is always the empty type, 
+so whole type definition "collapses" down to `never`.
+
+TODO: venn diagram
+
+IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
+
+```typescript
+[ X1, X2, X3 ] & unknown          // === [ X1, X2, X3 ]
+```
+
+The intersection with `unknown` just leaves the number grid alone.
+
+TODO: venn diagram
 
 

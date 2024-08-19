@@ -1,8 +1,8 @@
 # TypeScript Sudoku
 
 This is an experiment to define a `Sudoku` type.
-The goal is that we can play sudoku in TypeScript while the type checker complains if we make a mistake.
-We are not implementing a sudoku solver.
+The goal is that we can play Sudoku in TypeScript while the type checker complains if we make a mistake.
+We are not implementing a Sudoku solver.
 This is purely an exercise in writing type definitions.
 The final result is in [sudoku_v2.ts](./sudoku_v2.ts).
 
@@ -14,13 +14,13 @@ As a first approximation we can define the type as an array of numbers:
 type Sudoku = number[]
 ```
 
-This permits all valid sudokus, but also allows many *invalid* sudokus.
+This permits all valid Sudokus, but also allows many *invalid* Sudokus.
 
 ```typescript
 const invalidSudoku: Sudoku = [ -1, 7.5, 9, 9 ]
 ```
 First, all array elements have to be integers in the range 1 to 9.
-Second, sudokus are 9-by-9 grids so we need an array with exactly 81 elements.
+Second, Sudokus are 9-by-9 grids so we need an array with exactly 81 elements.
 That's easy enough:
 
 ```typescript
@@ -38,7 +38,7 @@ type Sudoku = [
   Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell,
 ]
 ```
-But the interesting part is: how do we enforce the sudoku rules?
+But the interesting part is: how do we enforce the Sudoku rules?
 Currently, this still type checks:
 
 ```typescript
@@ -61,7 +61,7 @@ We have to make sure that
  * all columns are duplicate free and
  * each of the 3-by-3 squares is also duplicate free.
 
-For simplicity, let's just consider a 3-cell sudoku for now:
+For simplicity, let's just consider a 3-cell Sudoku for now:
 
 ```typescript
 type BabySudoku = [ Cell, Cell, Cell ]
@@ -80,7 +80,7 @@ type BabySudoku<
 > = [ X1, X2, X3 ]
 ```
 
-Guess how many parameters the full 9-by-9 sudoku needs.
+Guess how many parameters the full 9-by-9 Sudoku needs.
 
 A problem is that we have to provide these type parameters now when we create `BabySudoku` values:
 
@@ -109,7 +109,7 @@ const babySudoku = <
 >(cells: [ X1, X2, X3 ]) => cells
 ```
 
-With that we can construct sudokus, 
+With that we can construct Sudokus, 
 without instantiating type parameters explicitly:
 
 ```typescript
@@ -127,7 +127,7 @@ we can use the built-in utility type [`Exclude`](https://www.typescriptlang.org/
 
 ```typescript
 const babySudoku = <
-  X1 extends Cell, 
+  X1 extends Cell,
   X2 extends Cell, 
   X3 extends Cell
 >(
@@ -162,7 +162,7 @@ That is, unless the assignment is unreachable or you use some malicous type cast
 const value: never = "obviously not never" as never
 ```
 `never` is useful to strategically provoke a type error.
-The plan is to formulate the sudoku type in such a way, 
+The plan is to formulate the Sudoku type in such a way, 
 that it is equal to `never` IF constraints are violated.
 
 `unknown` is a super-type of everything similar, to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
@@ -196,7 +196,7 @@ we can formulate arbitrary boolean constraints inside type definitions.
 
 ## Constraints using Type-Level Predicates
 
-The plan is come of with some type-level boolean expression that describes the (baby-)sudoku constraints:
+The plan is come of with some type-level boolean expression that describes the (Baby-)Sudoku constraints:
 ```typescript
 type CheckSudokuConstraints<X1, X2, X3> = ??? // "returns" either `unknown` or `never`
 ```
@@ -212,7 +212,7 @@ Once we know how to define `CheckSudokuConstraints` we build the intersection wi
 ```typescript
 [ X1, X2, X3 ] & CheckSudokuConstraints<X1, X2, X3>
 ```
-IF some sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `never` and we get:
+IF some Sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `never` and we get:
 
 ```typescript
 [ X1, X2, X3 ] & never             // ==> never
@@ -223,7 +223,7 @@ so the whole definition "collapses" down to `never`.
 
 <img alt="Venn diagram: never intersection" src="intersect_never.png" height="250px" />
 
-IF all sudoku constraint are satisfied, 
+IF all Sudoku constraint are satisfied, 
 then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
 
 ```typescript
@@ -350,12 +350,39 @@ type CheckSudokuConstraints<
 
 ## Incomplete Sudokus
 
-todo...
+Until now we have only described complete Sudokus, 
+where every cell is already filled with an integer.
+To actually play Sudoku, we need to allow empty cells.
+
+For that we pick some dummy value to represent an empty cell.
+This can be anything, as long as it's not an number from 1 to 9:
+
+```typescript
+const _ = "empty cell"
+
+type EmptyCell = typeof _
+```
+
+Now we *could* redefine `Cell` to include this value:
+
+```typescript
+type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | EmptyCell // bad idea
+```
+But then, the constraints also apply to empty cells 
+and the type checker starts complaining about two empty cells in the same row etc.
+Empty cells should be unconstrained and allowed everywhere.
+We can do that by explicitly annotating each cell with `| EmptyCell`:
+
+```typescript
+[ X1 | EmptyCell, X2 | EmptyCell, X3 | EmptyCell ] & CheckSudokuConstraints<X1, X2, X3>
+```
+So in each cell we either allow an empty cell or we allow an integer from 1-9, 
+that is additionally constrained.
 
 ## Conclusion
 
 This is not really useful.
-One could try to use this to implement a statically verified sudoku solver: 
+One could try to use this to implement a statically verified Sudoku solver: 
 
 ```typescript
 function solveSudoku(grid: IncompleteSudoku): CompleteSudoku { /* ... */ }

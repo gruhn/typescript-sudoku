@@ -34,7 +34,7 @@ type AllDifferent<
 
 const _ = "empty cell"
 
-type Hole = typeof _
+type EmptyCell = typeof _
 
 type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
@@ -68,15 +68,15 @@ export const sudoku = <
   X97 extends Cell, X98 extends Cell, X99 extends Cell,
 >(grid:
   [
-    X11 | Hole, X12 | Hole, X13 | Hole, X14 | Hole, X15 | Hole, X16 | Hole, X17 | Hole, X18 | Hole, X19 | Hole,
-    X21 | Hole, X22 | Hole, X23 | Hole, X24 | Hole, X25 | Hole, X26 | Hole, X27 | Hole, X28 | Hole, X29 | Hole,
-    X31 | Hole, X32 | Hole, X33 | Hole, X34 | Hole, X35 | Hole, X36 | Hole, X37 | Hole, X38 | Hole, X39 | Hole,
-    X41 | Hole, X42 | Hole, X43 | Hole, X44 | Hole, X45 | Hole, X46 | Hole, X47 | Hole, X48 | Hole, X49 | Hole,
-    X51 | Hole, X52 | Hole, X53 | Hole, X54 | Hole, X55 | Hole, X56 | Hole, X57 | Hole, X58 | Hole, X59 | Hole,
-    X61 | Hole, X62 | Hole, X63 | Hole, X64 | Hole, X65 | Hole, X66 | Hole, X67 | Hole, X68 | Hole, X69 | Hole,
-    X71 | Hole, X72 | Hole, X73 | Hole, X74 | Hole, X75 | Hole, X76 | Hole, X77 | Hole, X78 | Hole, X79 | Hole,
-    X81 | Hole, X82 | Hole, X83 | Hole, X84 | Hole, X85 | Hole, X86 | Hole, X87 | Hole, X88 | Hole, X89 | Hole,
-    X91 | Hole, X92 | Hole, X93 | Hole, X94 | Hole, X95 | Hole, X96 | Hole, X97 | Hole, X98 | Hole, X99 | Hole,
+    X11 | EmptyCell, X12 | EmptyCell, X13 | EmptyCell, X14 | EmptyCell, X15 | EmptyCell, X16 | EmptyCell, X17 | EmptyCell, X18 | EmptyCell, X19 | EmptyCell,
+    X21 | EmptyCell, X22 | EmptyCell, X23 | EmptyCell, X24 | EmptyCell, X25 | EmptyCell, X26 | EmptyCell, X27 | EmptyCell, X28 | EmptyCell, X29 | EmptyCell,
+    X31 | EmptyCell, X32 | EmptyCell, X33 | EmptyCell, X34 | EmptyCell, X35 | EmptyCell, X36 | EmptyCell, X37 | EmptyCell, X38 | EmptyCell, X39 | EmptyCell,
+    X41 | EmptyCell, X42 | EmptyCell, X43 | EmptyCell, X44 | EmptyCell, X45 | EmptyCell, X46 | EmptyCell, X47 | EmptyCell, X48 | EmptyCell, X49 | EmptyCell,
+    X51 | EmptyCell, X52 | EmptyCell, X53 | EmptyCell, X54 | EmptyCell, X55 | EmptyCell, X56 | EmptyCell, X57 | EmptyCell, X58 | EmptyCell, X59 | EmptyCell,
+    X61 | EmptyCell, X62 | EmptyCell, X63 | EmptyCell, X64 | EmptyCell, X65 | EmptyCell, X66 | EmptyCell, X67 | EmptyCell, X68 | EmptyCell, X69 | EmptyCell,
+    X71 | EmptyCell, X72 | EmptyCell, X73 | EmptyCell, X74 | EmptyCell, X75 | EmptyCell, X76 | EmptyCell, X77 | EmptyCell, X78 | EmptyCell, X79 | EmptyCell,
+    X81 | EmptyCell, X82 | EmptyCell, X83 | EmptyCell, X84 | EmptyCell, X85 | EmptyCell, X86 | EmptyCell, X87 | EmptyCell, X88 | EmptyCell, X89 | EmptyCell,
+    X91 | EmptyCell, X92 | EmptyCell, X93 | EmptyCell, X94 | EmptyCell, X95 | EmptyCell, X96 | EmptyCell, X97 | EmptyCell, X98 | EmptyCell, X99 | EmptyCell,
   ]
 
   // all 9 rows
@@ -119,7 +119,7 @@ export const sudoku = <
 
 ///////////// EXAMPLE SUDOKUS //////////////////
 
-// complete valid sudoku
+// complete valid Sudoku
 sudoku([
   7, 9, 2,  3, 5, 4,  6, 1, 8,
   8, 5, 4,  1, 2, 6,  3, 9, 7,
@@ -134,7 +134,7 @@ sudoku([
   5, 3, 6,  4, 7, 9,  2, 8, 1,
 ])
 
-// incomplete valid sudoku
+// incomplete valid Sudoku
 sudoku([
   _, 3, _,  _, _, _,  _, _, _,
   _, _, _,  1, 9, 5,  _, _, _,
@@ -147,18 +147,4 @@ sudoku([
   _, 6, _,  _, _, _,  2, 8, _,
   _, _, _,  4, 1, 9,  _, _, 5,
   _, _, _,  _, _, _,  _, 7, _,
-])
-
-sudoku([
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
-
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
-
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
-  _, _, _,  _, _, _,  _, _, _,
 ])

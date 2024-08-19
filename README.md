@@ -200,7 +200,7 @@ The plan is come of with some type-level boolean expression that describes the (
 type CheckSudokuConstraints<X1, X2, X3> = ??? // "returns" either `unknown` or `never`
 ```
 At this point we can think of `CheckSudokuConstraints` as a function that returns `true` or `false` (aka. a predicate).
-The analogous term-level function would look like this:
+An analogous term-level function would look like this:
 ```typescript
 function checkSudokuRules(x1: Cell, x2: Cell, x3: Cell): boolean {
    return ???
@@ -233,6 +233,8 @@ The intersection with `unknown` just leaves the number grid alone.
 
 <img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" height="250px" />
 
+### How to define `CheckSudokuConstraints<X1, X2, X3>` ?
+
 ## Conclusion
 
 This is not really useful.
@@ -244,9 +246,9 @@ function solveSudoku(grid: IncompleteSudoku): CompleteSudoku { /* ... */ }
 
 This would give very high confidence in the implementations correctness.
 However, it's probably hard to convince the type checker that the code really matches the spec.
-Even then, the error messages are not very friendly
-> Argument of type 'number[]' is not assignable to parameter of type 'never'
-and, depending on the TypeScript version, it can take multiple seconds to type check the code.
+Even then, error messages are not very friendly and, 
+depending on the TypeScript version, 
+it can take multiple seconds to type check the code.
 
 On the other hand, I believe most people have the impression that types can only talk about the superficial structure of data.
-I find it interesting to see how much expressivity we can squeeze out of the type system.
+I think it's interesting to see how much expressivity can be squeezed out of the type system.

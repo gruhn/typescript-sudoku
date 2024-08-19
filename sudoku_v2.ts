@@ -38,7 +38,7 @@ type EmptyCell = typeof _
 
 type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export const sudoku = <
+export function sudoku<
   X11 extends Cell, X12 extends Cell, X13 extends Cell, 
   X14 extends Cell, X15 extends Cell, X16 extends Cell, 
   X17 extends Cell, X18 extends Cell, X19 extends Cell,
@@ -115,7 +115,7 @@ export const sudoku = <
   & AllDifferent<X71, X72, X73, X81, X82, X83, X91, X92, X93>
   & AllDifferent<X74, X75, X76, X84, X85, X86, X94, X95, X96>
   & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
-) => grid
+) {}
 
 ///////////// EXAMPLE SUDOKUS //////////////////
 

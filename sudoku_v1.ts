@@ -1,7 +1,7 @@
 
 type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export const sudoku = <
+export function sudoku<
   X11 extends Cell,
   X21 extends Cell,
   X31 extends Cell,
@@ -167,7 +167,7 @@ export const sudoku = <
     Exclude<X89, X77 | X97 | X79 | X59 | X49 | X98 | X99 | X39 | X84 | X19 | X82 | X85 | X87 | X88 | X29 | X69 | X78 | X86 | X81 | X83>,
     Exclude<X99, X77 | X97 | X79 | X59 | X49 | X93 | X98 | X39 | X19 | X91 | X94 | X89 | X96 | X87 | X88 | X29 | X69 | X78 | X92 | X95>,
   ]
-) => {}      
+) {}      
 
 
 
@@ -177,7 +177,7 @@ sudoku([
   3, 6, 1,  9, 8, 7,  5, 2, 4,
 
   9, 4, 5,  6, 3, 8,  1, 7, 2,
-  2, 7, 8,  5, 2, 1,  9, 3, 6,
+  2, 7, 8,  5, 4, 1,  9, 3, 6,
   6, 1, 3,  7, 9, 2,  8, 4, 5,
 
   4, 2, 9,  8, 1, 5,  7, 6, 3,

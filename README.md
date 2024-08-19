@@ -73,11 +73,9 @@ By introducing a type parameter for every cell,
 we can refer to cells by name:
 
 ```typescript
-type BabySudoku<
-  X1 extends Cell,
-  X2 extends Cell,
-  X3 extends Cell
-> = [ X1, X2, X3 ]
+type BabySudoku<X1 extends Cell, X2 extends Cell, X3 extends Cell> = [ 
+  X1, X2, X3 
+]
 ```
 
 Guess how many parameters the full 9-by-9 Sudoku needs.
@@ -99,18 +97,16 @@ func<string>("hello") // type parameter can be provided ...
 func("hello")         // ... but not necessary
 ```
 
-So as a workaround we can put the type definition of `BabySudoku` into the argument of an arrow function:
+So as a workaround we can define the type in the argument of some dummy function:
 
 ```typescript
-const babySudoku = <
-  X1 extends Cell, 
-  X2 extends Cell, 
-  X3 extends Cell
->(cells: [ X1, X2, X3 ]) => cells
+const babySudoku = <X1 extends Cell,  X2 extends Cell,  X3 extends Cell >(
+  grid: [ X1, X2, X3 ]
+) => grid
 ```
 
 With that we can construct Sudokus, 
-without instantiating type parameters explicitly:
+without instantiating type parameters:
 
 ```typescript
 const s = babySudoku([1, 2, 3])
@@ -118,12 +114,13 @@ const s = babySudoku([1, 2, 3])
 
 The runtime behavior of `babySudoku` is boring.
 It just returns it's argument unchanged (aka. the identity function).
-This is a bit awkward but so far I haven't found a better alternative.
+
+This is a bit awkward but I haven't found a better way so far.
 
 ## Constraints using `Exclude`
 
-We still need to ensure that all cells are different, 
-we can use the built-in utility type [`Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers).
+We still need to ensure that all cells are different.
+One way to do it, is with the built-in utility type [`Exclude`](https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers).
 
 ```typescript
 const babySudoku = <
@@ -131,12 +128,12 @@ const babySudoku = <
   X2 extends Cell, 
   X3 extends Cell
 >(
-  cells: [ 
+  grid: [ 
     Exclude<X1, X2 | X3>, 
     Exclude<X2, X1 | X3>, 
     Exclude<X3, X1 | X2>, 
   ]
-) => cells
+) => grid
 ```
 
 This works! 
@@ -149,15 +146,15 @@ For each cell we have to explicitly list the other cells that are required to be
 Writing that out manually is tedious.
 I ended up [creating a script](generate_sudoku_v1.ts) just to print out the type definition.
 
-I came up with another approach that has more compact type definitions. 
+I came up with another approach that is more complex but also more flexible. 
 Before we can talk about that we need to talk about the types `unknown` and `never`.
 
 ## Interlude: `unknown` and `never`
 
-`never` is the empty type, which makes it a sub-type of everything.
+`never` is the empty type, making it a subtype of everything.
 There is no value that has type `never`. 
 So you always get a type error no matter what you write on the right-hand side of `const value: never = ???`.
-That is, unless the assignment is unreachable or you use some malicous type cast: 
+That is, unless the assignment is unreachable or you use some malicous type cast like: 
 ```typescript
 const value: never = "obviously not never" as never
 ```
@@ -165,15 +162,15 @@ const value: never = "obviously not never" as never
 The plan is to formulate the Sudoku type in such a way, 
 that it is equal to `never` IF constraints are violated.
 
-`unknown` is a super-type of everything similar, to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
+`unknown` is a supertype of everything, similar to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
 
 <img alt="type hierarchie" src="./type-hierarchie.png" height="300px" />
 
 I find it useful to think of `unknown` and `never` as type-level analogs of `true` and `false`.
-Because in combination with union types (`A | B`) and intersection types (`A & B`), 
+In combination with union types (`A | B`) and intersection types (`A & B`), 
 `unknown` and `never` behave just like boolean OR (`a || b`) and boolean AND (`a && b`).
 Notice the syntactic similarity of these operators.
-For example, `unknown | never` is `unknown`, i.e. building the union of *absolutely-everything* and *absolutely-nothing* gives *absolutely-everything*.
+For example, `unknown | never` is the same as `unknown`, because building the union of *absolutely-everything* and *absolutely-nothing* give back *absolutely-everything*.
 Analogously, `true || false` is `true`.
 
 Let's define type aliases, to make the relationship more obvious:
@@ -196,12 +193,17 @@ we can formulate arbitrary boolean constraints inside type definitions.
 
 ## Constraints using Type-Level Predicates
 
-The plan is come of with some type-level boolean expression that describes the (Baby-)Sudoku constraints:
+The plan is to come up with some type-level boolean expression that describes the Sudoku constraints.
+Again, let's stick to a 3-cell grid for now, where all cells have to be different.
+We want a to define a type
+
 ```typescript
 type CheckSudokuConstraints<X1, X2, X3> = ??? // "returns" either `unknown` or `never`
 ```
+
 At this point we can think of `CheckSudokuConstraints` as a function that returns `true` or `false` (aka. a predicate).
 An analogous term-level function would look like this:
+
 ```typescript
 function checkSudokuRules(x1: Cell, x2: Cell, x3: Cell): boolean {
    return ???
@@ -209,16 +211,18 @@ function checkSudokuRules(x1: Cell, x2: Cell, x3: Cell): boolean {
 ```
 
 Once we know how to define `CheckSudokuConstraints` we build the intersection with the actual number grid:
+
 ```typescript
 [ X1, X2, X3 ] & CheckSudokuConstraints<X1, X2, X3>
 ```
+
 IF some Sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `never` and we get:
 
 ```typescript
 [ X1, X2, X3 ] & never             // ==> never
 ```
 
-The intersection with the empty type is always the empty type, 
+The intersection with *absolutely-nothing* is always *absolutely-nothing* again, 
 so the whole definition "collapses" down to `never`.
 
 <img alt="Venn diagram: never intersection" src="intersect_never.png" height="250px" />
@@ -230,13 +234,13 @@ then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
 [ X1, X2, X3 ] & unknown          // ==> [ X1, X2, X3 ]
 ```
 
-The intersection with `unknown` just leaves the number grid alone.
+The intersection with `unknown` just leaves the left-hand side alone.
 
 <img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" height="250px" />
 
 ### Defining `CheckSudokuConstraints`
 
-First we need a type-level predicate compare two cells.
+First we need a type-level predicate to compare two cells.
 We can use  
 [conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) 
 to check if two types are equal:
@@ -247,8 +251,8 @@ type Equal<A, B> = A extends B ? (B extends A ? unknown : never) : never
 ```
 If `A` is a subtype of `B` and `B` is a subtype of `A`, 
 then `A` and `B` must be the same type.
-Thus, we return true (`unknown`). 
-Otherwise, we return false (`never`).
+Thus, we return true (i.e. `unknown`). 
+Otherwise, we return false (i.e. `never`).
 
 By negating the logic, 
 we get a type-level predicate that tells us when two cells are different:
@@ -261,6 +265,7 @@ type Different<A, B> = A extends B ? (B extends A  ? never : unknown) : unknown
 
 To express that a bunch of cells are all different, we can go through all pairs.
 Again, read the intersection type operator (`&`) just like boolean AND:
+
 ```typescript
   Different<X1, X2> & Different<X1, X3> 
 & Different<X2, X1> & Different<X2, X3>
@@ -275,7 +280,7 @@ so we can skip half the pairs:
 Different<X1, X2> & Different<X1, X3> & Different<X2, X3>
 ```
 
-And that's already the definition of `CheckSudokuConstraints` for if we only have three cells:
+And that's already the definition of `CheckSudokuConstraints` if we only have three cells:
 
 ```typescript
 type CheckSudokuConstraints<X1, X2, X3> = Different<X1, X2> & Different<X1, X3> & Different<X2, X3>
@@ -284,7 +289,7 @@ type CheckSudokuConstraints<X1, X2, X3> = Different<X1, X2> & Different<X1, X3> 
 For the full 81-cell Sudoku, the number of cells to compare is getting a bit out of hand.
 We want to express that the cells in each row, each column and each square are pairwise different.
 Rows, columns and squares always have exactly 9 cells.
-So we can define one more utility type that just checks pairwise difference of 9 arbitrary cells:
+So we can define one more utility type that just checks pairwise difference of 9 arbitrary given cells:
 
 ```typescript
 type AllDifferent<X1, X2, X3, X4, X5, X6, X7, X8, X9> = 
@@ -294,7 +299,7 @@ type AllDifferent<X1, X2, X3, X4, X5, X6, X7, X8, X9> =
   & ...
 ```
 
-So finally, we can define `CheckSudokuConstraints` for the full Sudoku:
+Finally, we can define `CheckSudokuConstraints` for the full Sudoku:
 
 ```typescript
 type CheckSudokuConstraints<
@@ -355,7 +360,7 @@ where every cell is already filled with an integer.
 To actually play Sudoku, we need to allow empty cells.
 
 For that we pick some dummy value to represent an empty cell.
-This can be anything, as long as it's not an number from 1 to 9:
+This can be anything, as long as it's not a number from 1 to 9:
 
 ```typescript
 const _ = "empty cell"
@@ -366,10 +371,11 @@ type EmptyCell = typeof _
 Now we *could* redefine `Cell` to include this value:
 
 ```typescript
-type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | EmptyCell // bad idea
+type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | EmptyCell // won't work
 ```
-But then, the constraints also apply to empty cells 
-and the type checker starts complaining about two empty cells in the same row etc.
+
+But then the constraints also apply to empty cells 
+and the type checker starts complaining about things like two empty cells in the same row.
 Empty cells should be unconstrained and allowed everywhere.
 We can do that by explicitly annotating each cell with `| EmptyCell`:
 
@@ -378,10 +384,12 @@ We can do that by explicitly annotating each cell with `| EmptyCell`:
 ```
 So in each cell we either allow an empty cell or we allow an integer from 1-9 that is additionally constrained.
 
+For the full type definition, check out [sudoku_v2.ts](./sudoku_v2.ts).
+
 ## Conclusion
 
 This is not really useful.
-One could try to implement a statically verified Sudoku solver based on these type definitions: 
+One could try to implement a statically verified Sudoku solver based on these types:
 
 ```typescript
 function solveSudoku(grid: IncompleteSudoku): CompleteSudoku { /* ... */ }
@@ -393,5 +401,4 @@ Even then, error messages are not very friendly and,
 depending on the TypeScript version, 
 it can take multiple seconds to type check the code.
 
-On the other hand, I believe many people have the impression that types can only talk about very superficial structure of data.
-I think it's interesting to see how much expressivity can be squeezed out of the type system.
+Nevertheless, I think it's interesting to see how much expressivity one can squeeze out of the type system.

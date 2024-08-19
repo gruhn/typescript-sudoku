@@ -1,8 +1,8 @@
 # TypeScript Sudoku
 
 This is an experiment to define a `Sudoku` type.
-The goal is that we can play sudoku in TypeScript while the type checker complains if make a mistake.
-We won't implement a sudoku solver.
+The goal is that we can play sudoku in TypeScript while the type checker complains if we make a mistake.
+We are not implementing a sudoku solver.
 This is purely an exercise in writing type definitions.
 
 ![demo video: final approach](./sudoku_v2_demo.gif)
@@ -16,7 +16,7 @@ type Sudoku = number[]
 This permits all valid sudokus, but also allows many *invalid* sudokus.
 
 ```typescript
-const invalidSudoku: Sudoku = [ -1, 7.5, 9, 9 ] // type checks!
+const invalidSudoku: Sudoku = [ -1, 7.5, 9, 9 ]
 ```
 First, all array elements have to be integers in the range 1 to 9.
 Second, sudokus are 9-by-9 grids so we need an array with exactly 81 elements.
@@ -38,7 +38,7 @@ type Sudoku = [
 ]
 ```
 But the interesting part is: how do we enforce the sudoku rules?
-Currently, this still type-checks:
+Currently, this still type checks:
 
 ```typescript
 const invalidSudoku: Sudoku = [
@@ -212,22 +212,41 @@ Once we know how to define `CheckSudokuConstraints` we build the intersection wi
 [ X1, X2, X3 ] & CheckSudokuConstraints<X1, X2, X3>
 ```
 IF some sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `never` and we get:
+
 ```typescript
-[ X1, X2, X3 ] & never             // === never
+[ X1, X2, X3 ] & never             // ==> never
 ```
+
 The intersection with the empty type is always the empty type, 
-so whole type definition "collapses" down to `never`.
+so the whole definition "collapses" down to `never`.
 
 <img alt="Venn diagram: never intersection" src="intersect_never.png" height="250px" />
 
-IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
+IF all sudoku constraint are satisfied, 
+then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
 
 ```typescript
-[ X1, X2, X3 ] & unknown          // === [ X1, X2, X3 ]
+[ X1, X2, X3 ] & unknown          // ==> [ X1, X2, X3 ]
 ```
 
 The intersection with `unknown` just leaves the number grid alone.
 
 <img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" height="250px" />
 
+## Conclusion
 
+This is not really useful.
+One could try to use this to implement a statically verified sudoku solver: 
+
+```typescript
+function solveSudoku(grid: IncompleteSudoku): CompleteSudoku { /* ... */ }
+```
+
+This would give very high confidence in the implementations correctness.
+However, it's probably hard to convince the type checker that the code really matches the spec.
+Even then, the error messages are not very friendly
+> Argument of type 'number[]' is not assignable to parameter of type 'never'
+and, depending on the TypeScript version, it can take multiple seconds to type check the code.
+
+On the other hand, I believe most people have the impression that types can only talk about the superficial structure of data.
+I find it interesting to see how much expressivity we can squeeze out of the type system.

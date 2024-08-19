@@ -32,40 +32,40 @@ type AllDifferent<
 
   & Different<X8, X9>
 
-const _ = Symbol('hole')
+const _ = "empty cell"
 
 type Hole = typeof _
 
 type Cell = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export const sudoku = <
-  const X11 extends Cell, const X12 extends Cell, const X13 extends Cell, 
-  const X14 extends Cell, const X15 extends Cell, const X16 extends Cell, 
-  const X17 extends Cell, const X18 extends Cell, const X19 extends Cell,
-  const X21 extends Cell, const X22 extends Cell, const X23 extends Cell, 
-  const X24 extends Cell, const X25 extends Cell, const X26 extends Cell, 
-  const X27 extends Cell, const X28 extends Cell, const X29 extends Cell,
-  const X31 extends Cell, const X32 extends Cell, const X33 extends Cell, 
-  const X34 extends Cell, const X35 extends Cell, const X36 extends Cell, 
-  const X37 extends Cell, const X38 extends Cell, const X39 extends Cell,
-  const X41 extends Cell, const X42 extends Cell, const X43 extends Cell, 
-  const X44 extends Cell, const X45 extends Cell, const X46 extends Cell, 
-  const X47 extends Cell, const X48 extends Cell, const X49 extends Cell,
-  const X51 extends Cell, const X52 extends Cell, const X53 extends Cell, 
-  const X54 extends Cell, const X55 extends Cell, const X56 extends Cell, 
-  const X57 extends Cell, const X58 extends Cell, const X59 extends Cell,
-  const X61 extends Cell, const X62 extends Cell, const X63 extends Cell, 
-  const X64 extends Cell, const X65 extends Cell, const X66 extends Cell, 
-  const X67 extends Cell, const X68 extends Cell, const X69 extends Cell,
-  const X71 extends Cell, const X72 extends Cell, const X73 extends Cell, 
-  const X74 extends Cell, const X75 extends Cell, const X76 extends Cell, 
-  const X77 extends Cell, const X78 extends Cell, const X79 extends Cell,
-  const X81 extends Cell, const X82 extends Cell, const X83 extends Cell, 
-  const X84 extends Cell, const X85 extends Cell, const X86 extends Cell, 
-  const X87 extends Cell, const X88 extends Cell, const X89 extends Cell,
-  const X91 extends Cell, const X92 extends Cell, const X93 extends Cell, 
-  const X94 extends Cell, const X95 extends Cell, const X96 extends Cell, 
-  const X97 extends Cell, const X98 extends Cell, const X99 extends Cell,
+  X11 extends Cell, X12 extends Cell, X13 extends Cell, 
+  X14 extends Cell, X15 extends Cell, X16 extends Cell, 
+  X17 extends Cell, X18 extends Cell, X19 extends Cell,
+  X21 extends Cell, X22 extends Cell, X23 extends Cell, 
+  X24 extends Cell, X25 extends Cell, X26 extends Cell, 
+  X27 extends Cell, X28 extends Cell, X29 extends Cell,
+  X31 extends Cell, X32 extends Cell, X33 extends Cell, 
+  X34 extends Cell, X35 extends Cell, X36 extends Cell, 
+  X37 extends Cell, X38 extends Cell, X39 extends Cell,
+  X41 extends Cell, X42 extends Cell, X43 extends Cell, 
+  X44 extends Cell, X45 extends Cell, X46 extends Cell, 
+  X47 extends Cell, X48 extends Cell, X49 extends Cell,
+  X51 extends Cell, X52 extends Cell, X53 extends Cell, 
+  X54 extends Cell, X55 extends Cell, X56 extends Cell, 
+  X57 extends Cell, X58 extends Cell, X59 extends Cell,
+  X61 extends Cell, X62 extends Cell, X63 extends Cell, 
+  X64 extends Cell, X65 extends Cell, X66 extends Cell, 
+  X67 extends Cell, X68 extends Cell, X69 extends Cell,
+  X71 extends Cell, X72 extends Cell, X73 extends Cell, 
+  X74 extends Cell, X75 extends Cell, X76 extends Cell, 
+  X77 extends Cell, X78 extends Cell, X79 extends Cell,
+  X81 extends Cell, X82 extends Cell, X83 extends Cell, 
+  X84 extends Cell, X85 extends Cell, X86 extends Cell, 
+  X87 extends Cell, X88 extends Cell, X89 extends Cell,
+  X91 extends Cell, X92 extends Cell, X93 extends Cell, 
+  X94 extends Cell, X95 extends Cell, X96 extends Cell, 
+  X97 extends Cell, X98 extends Cell, X99 extends Cell,
 >(grid:
   [
     X11 | Hole, X12 | Hole, X13 | Hole, X14 | Hole, X15 | Hole, X16 | Hole, X17 | Hole, X18 | Hole, X19 | Hole,
@@ -149,15 +149,16 @@ sudoku([
   _, _, _,  _, _, _,  _, 7, _,
 ])
 
+sudoku([
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
 
-type BabySudoku<
-  X1 extends Cell,
-  X2 extends Cell,
-  X3 extends Cell
-> = [ 
-  Exclude<X1, X2 | X3>, 
-  Exclude<X2, X1 | X3>, 
-  Exclude<X3, X1 | X2>, 
-]
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
 
-const babySudoku: BabySudoku<1, 2, 3> = [ 1, 2, 3 ]
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
+  _, _, _,  _, _, _,  _, _, _,
+])

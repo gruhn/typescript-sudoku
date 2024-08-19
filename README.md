@@ -4,6 +4,7 @@ This is an experiment to define a `Sudoku` type.
 The goal is that we can play sudoku in TypeScript while the type checker complains if we make a mistake.
 We are not implementing a sudoku solver.
 This is purely an exercise in writing type definitions.
+The final result is in [sudoku_v2.ts](./sudoku_v2.ts).
 
 ![demo video: final approach](./sudoku_v2_demo.gif)
 
@@ -235,8 +236,121 @@ The intersection with `unknown` just leaves the number grid alone.
 
 ### Defining `CheckSudokuConstraints`
 
+First we need a type-level predicate compare two cells.
+We can use  
+[conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) 
+to check if two types are equal:
+```typescript
+type Equal<A, B> = A extends B ? (B extends A ? unknown : never) : never
+// Equal<3, 3>    ==>    unknown
+// Equal<3, 4>    ==>    never
+```
+If `A` is a subtype of `B` and `B` is a subtype of `A`, 
+then `A` and `B` must be the same type.
+Thus, we return true (`unknown`). 
+Otherwise, we return false (`never`).
 
+By negating the logic, 
+we get a type-level predicate that tells us when two cells are different:
 
+```typescript
+type Different<A, B> = A extends B ? (B extends A  ? never : unknown) : unknown
+// Different<3, 3>    ==>    never
+// Different<3, 4>    ==>    unkown
+```
+
+To express that a bunch of cells are all different, we can go through all pairs.
+Again, read the intersection type operator (`&`) just like boolean AND:
+```typescript
+  Different<X1, X2> & Different<X1, X3> 
+& Different<X2, X1> & Different<X2, X3>
+& Different<X3, X1> & Different<X3, X2>
+```
+
+Actually, `Different` is symmetric, i.e. 
+`Different<X1, X2>` and `Different<X2, X1>` are the same,
+so we can skip half the pairs:
+
+```typescript
+Different<X1, X2> & Different<X1, X3> & Different<X2, X3>
+```
+
+And that's already the definition of `CheckSudokuConstraints` for if we only have three cells:
+
+```typescript
+type CheckSudokuConstraints<X1, X2, X3> = Different<X1, X2> & Different<X1, X3> & Different<X2, X3>
+```
+
+For the full 81-cell Sudoku, the number of cells to compare is getting a bit out of hand.
+We want to express that the cells in each row, each column and each square are pairwise different.
+Rows, columns and squares always have exactly 9 cells.
+So we can define one more utility type that just checks pairwise difference of 9 arbitrary cells:
+
+```typescript
+type AllDifferent<X1, X2, X3, X4, X5, X6, X7, X8, X9> = 
+    Different<X1, X2> & Different<X1, X3> & Different<X1, X3>
+  & Different<X1, X4> & Different<X1, X5> & Different<X1, X6>
+  & Different<X1, X7> & Different<X1, X8> & Different<X1, X9>
+  & ...
+```
+
+So finally, we can define `CheckSudokuConstraints` for the full Sudoku:
+
+```typescript
+type CheckSudokuConstraints<
+  X11, X12, X13,  X14, X15, X16,  X17, X18, X19,
+  X21, X22, X23,  X24, X25, X26,  X27, X28, X29,
+  X31, X32, X33,  X34, X35, X36,  X37, X38, X39,
+
+  X41, X42, X43,  X44, X45, X46,  X47, X48, X49,
+  X51, X52, X53,  X54, X55, X56,  X57, X58, X59,
+  X61, X62, X63,  X64, X65, X66,  X67, X68, X69,
+
+  X71, X72, X73,  X74, X75, X76,  X77, X78, X79,
+  X81, X82, X83,  X84, X85, X86,  X87, X88, X89,
+  X91, X92, X93,  X94, X95, X96,  X97, X98, X99,
+> = 
+  // all 9 rows
+  & AllDifferent<X11, X12, X13, X14, X15, X16, X17, X18, X19>
+  & AllDifferent<X21, X22, X23, X24, X25, X26, X27, X28, X29>
+  & AllDifferent<X31, X32, X33, X34, X35, X36, X37, X38, X39>
+  & AllDifferent<X41, X42, X43, X44, X45, X46, X47, X48, X49>
+  & AllDifferent<X51, X52, X53, X54, X55, X56, X57, X58, X59>
+  & AllDifferent<X61, X62, X63, X64, X65, X66, X67, X68, X69>
+  & AllDifferent<X71, X72, X73, X74, X75, X76, X77, X78, X79>
+  & AllDifferent<X81, X82, X83, X84, X85, X86, X87, X88, X89>
+  & AllDifferent<X91, X92, X93, X94, X95, X96, X97, X98, X99>
+
+  // all 9 columns
+  & AllDifferent<X11, X21, X31, X41, X51, X61, X71, X81, X91>
+  & AllDifferent<X12, X22, X32, X42, X52, X62, X72, X82, X92>
+  & AllDifferent<X13, X23, X33, X43, X53, X63, X73, X83, X93>
+  & AllDifferent<X14, X24, X34, X44, X54, X64, X74, X84, X94>
+  & AllDifferent<X15, X25, X35, X45, X55, X65, X75, X85, X95>
+  & AllDifferent<X16, X26, X36, X46, X56, X66, X76, X86, X96>
+  & AllDifferent<X17, X27, X37, X47, X57, X67, X77, X87, X97>
+  & AllDifferent<X18, X28, X38, X48, X58, X68, X78, X88, X98>
+  & AllDifferent<X19, X29, X39, X49, X59, X69, X79, X89, X99>
+
+  // three upper squares
+  & AllDifferent<X11, X12, X13, X21, X22, X23, X31, X32, X33>
+  & AllDifferent<X14, X15, X16, X24, X25, X26, X34, X35, X36>
+  & AllDifferent<X17, X18, X19, X27, X28, X29, X37, X38, X39>
+
+  // three center squares
+  & AllDifferent<X41, X42, X43, X51, X52, X53, X61, X62, X63>
+  & AllDifferent<X44, X45, X46, X54, X55, X56, X64, X65, X66>
+  & AllDifferent<X47, X48, X49, X57, X58, X59, X67, X68, X69>
+
+  // three lower squares
+  & AllDifferent<X71, X72, X73, X81, X82, X83, X91, X92, X93>
+  & AllDifferent<X74, X75, X76, X84, X85, X86, X94, X95, X96>
+  & AllDifferent<X77, X78, X79, X87, X88, X89, X97, X98, X99>
+```
+
+## Incomplete Sudokus
+
+todo...
 
 ## Conclusion
 

@@ -233,7 +233,10 @@ The intersection with `unknown` just leaves the number grid alone.
 
 <img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" height="250px" />
 
-### How to define `CheckSudokuConstraints<X1, X2, X3>` ?
+### Defining `CheckSudokuConstraints`
+
+
+
 
 ## Conclusion
 
@@ -250,5 +253,5 @@ Even then, error messages are not very friendly and,
 depending on the TypeScript version, 
 it can take multiple seconds to type check the code.
 
-On the other hand, I believe most people have the impression that types can only talk about the superficial structure of data.
+On the other hand, I believe many people have the impression that types can only talk about very superficial structure of data.
 I think it's interesting to see how much expressivity can be squeezed out of the type system.

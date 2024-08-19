@@ -218,7 +218,7 @@ IF some sudoku constraint is violated, then `CheckSudokuConstraints<X1, X2, X3>`
 The intersection with the empty type is always the empty type, 
 so whole type definition "collapses" down to `never`.
 
-TODO: venn diagram
+<img alt="Venn diagram: never intersection" src="intersect_never.png" />
 
 IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>` "returns" `unknown` and we get:
 
@@ -228,6 +228,6 @@ IF all sudoku constraint is satisfied, then `CheckSudokuConstraints<X1, X2, X3>`
 
 The intersection with `unknown` just leaves the number grid alone.
 
-TODO: venn diagram
+<img alt="Venn diagram: unknown intersection" src="intersect_unknown.png" />
 
 

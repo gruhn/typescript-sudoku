@@ -2,8 +2,8 @@
 
 This is an experiment to precisely define a Sudoku type.
 The goal is that we can play Sudoku in TypeScript while the type checker complains about mistakes.
-We are not implementing a Sudoku solver.
-This is purely an exercise in writing type definitions.
+This is not about implementing a Sudoku solver.
+Just about writing unnecessarily complicated type definitions.
 For the final result, check out [sudoku_v2.ts](./sudoku_v2.ts).
 
 ![demo video: final approach](./sudoku_v2_demo.gif)

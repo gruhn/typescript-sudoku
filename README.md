@@ -388,7 +388,7 @@ For the full type definition, check out [sudoku_v2.ts](./sudoku_v2.ts).
 
 ## Conclusion
 
-This is not really useful.
+This is pretty useless.
 One could try to implement a statically verified Sudoku solver based on these types:
 
 ```typescript

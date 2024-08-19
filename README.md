@@ -1,10 +1,10 @@
 # TypeScript Sudoku
 
-This is an experiment to define a `Sudoku` type.
-The goal is that we can play Sudoku in TypeScript while the type checker complains if we make a mistake.
+This is an experiment to precisely define a Sudoku type.
+The goal is that we can play Sudoku in TypeScript while the type checker complains about mistakes.
 We are not implementing a Sudoku solver.
 This is purely an exercise in writing type definitions.
-The final result is in [sudoku_v2.ts](./sudoku_v2.ts).
+For the final result, check out [sudoku_v2.ts](./sudoku_v2.ts).
 
 ![demo video: final approach](./sudoku_v2_demo.gif)
 
@@ -82,7 +82,7 @@ type BabySudoku<
 
 Guess how many parameters the full 9-by-9 Sudoku needs.
 
-A problem is that we have to provide these type parameters now when we create `BabySudoku` values:
+A problem is, we have to instantiate these type parameters when we create `BabySudoku` values:
 
 ```typescript
 const s: BabySudoku<1, 2, 3> = [ 1, 2, 3 ]
@@ -376,13 +376,12 @@ We can do that by explicitly annotating each cell with `| EmptyCell`:
 ```typescript
 [ X1 | EmptyCell, X2 | EmptyCell, X3 | EmptyCell ] & CheckSudokuConstraints<X1, X2, X3>
 ```
-So in each cell we either allow an empty cell or we allow an integer from 1-9, 
-that is additionally constrained.
+So in each cell we either allow an empty cell or we allow an integer from 1-9 that is additionally constrained.
 
 ## Conclusion
 
 This is not really useful.
-One could try to use this to implement a statically verified Sudoku solver: 
+One could try to implement a statically verified Sudoku solver based on these type definitions: 
 
 ```typescript
 function solveSudoku(grid: IncompleteSudoku): CompleteSudoku { /* ... */ }

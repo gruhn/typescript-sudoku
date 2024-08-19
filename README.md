@@ -166,7 +166,7 @@ that it is equal to `never` IF constraints are violated.
 
 `unknown` is a super-type of everything similar, to `any` ([What's the difference between `unknown` and `any`?](https://stackoverflow.com/a/51439876)). 
 
-TODO: venn diagram
+![type hierarchie](./type-hierarchie.png)
 
 I find it useful to think of `unknown` and `never` as type-level analogs of `true` and `false`.
 Because in combination with union types (`A | B`) and intersection types (`A & B`), 

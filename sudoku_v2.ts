@@ -9,9 +9,9 @@ type AllDifferent<
   X1, X2, X3,
   X4, X5, X6,
   X7, X8, X9
-> = Different<X1, X2> & Different<X1, X3> & Different<X1, X3>
-  & Different<X1, X4> & Different<X1, X5> & Different<X1, X6>
-  & Different<X1, X7> & Different<X1, X8> & Different<X1, X9>
+> = Different<X1, X2> & Different<X1, X3> & Different<X1, X4> 
+  & Different<X1, X5> & Different<X1, X6> & Different<X1, X7> 
+  & Different<X1, X8> & Different<X1, X9>
 
   & Different<X2, X3> & Different<X2, X4> & Different<X2, X5>
   & Different<X2, X6> & Different<X2, X7> & Different<X2, X8>

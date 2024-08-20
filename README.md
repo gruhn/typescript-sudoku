@@ -167,10 +167,10 @@ that it is equal to `never` IF constraints are violated.
 <img alt="type hierarchie" src="./type-hierarchie.png" height="300px" />
 
 I find it useful to think of `unknown` and `never` as type-level analogs of `true` and `false`.
-In combination with union types (`A | B`) and intersection types (`A & B`), 
-`unknown` and `never` behave just like boolean OR (`a || b`) and boolean AND (`a && b`).
+In combination with `unknown` and `never`, union types (`A | B`) and intersection types (`A & B`)
+behave just like boolean OR (`a || b`) and boolean AND (`a && b`).
 Notice the syntactic similarity of these operators.
-For example, `unknown | never` is the same as `unknown`, because building the union of *absolutely-everything* and *absolutely-nothing* give back *absolutely-everything*.
+For example, `unknown | never` is the same as `unknown`, because building the union of *absolutely-everything* and *absolutely-nothing* gives back *absolutely-everything*.
 Analogously, `true || false` is `true`.
 
 Let's define type aliases, to make the relationship more obvious:
@@ -205,7 +205,7 @@ At this point we can think of `CheckSudokuConstraints` as a function that return
 An analogous term-level function would look like this:
 
 ```typescript
-function checkSudokuRules(x1: Cell, x2: Cell, x3: Cell): boolean {
+function checkSudokuConstraints(x1: Cell, x2: Cell, x3: Cell): boolean {
    return ???
 }
 ```
@@ -241,9 +241,7 @@ The intersection with `unknown` just leaves the left-hand side alone.
 ### Defining `CheckSudokuConstraints`
 
 First we need a type-level predicate to compare two cells.
-We can use  
-[conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) 
-to check if two types are equal:
+We can use [conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html) to check if two types are equal:
 ```typescript
 type Equal<A, B> = A extends B ? (B extends A ? unknown : never) : never
 // Equal<3, 3>    ==>    unknown
@@ -293,9 +291,8 @@ So we can define one more utility type that just checks pairwise difference of 9
 
 ```typescript
 type AllDifferent<X1, X2, X3, X4, X5, X6, X7, X8, X9> = 
-    Different<X1, X2> & Different<X1, X3> & Different<X1, X3>
-  & Different<X1, X4> & Different<X1, X5> & Different<X1, X6>
-  & Different<X1, X7> & Different<X1, X8> & Different<X1, X9>
+    Different<X1, X2> & Different<X1, X3> & Different<X1, X4>
+  & Different<X1, X5> & Different<X1, X6> & Different<X1, X7>
   & ...
 ```
 
